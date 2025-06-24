@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block title %}Buscar tareas{% endblock %}
+
+{% block content %}
+
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">← Volver al menú</a>
+<h1 class="mb-4">Búsqueda</h1>
+
+<!-- Formulario de búsqueda general -->
+<form method="post" class="mb-4">
+    <div class="input-group mb-4">
+        <input type="text" name="texto" value="{{ texto or '' }}" class="form-control" placeholder="Buscar por palabra clave...">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+
+    <!-- Filtros de estado -->
+    <div class="mb-3">
+        <label class="form-label">Filtrar por estado:</label>
+        <div class="btn-group d-flex flex-wrap gap-2" role="group">
+            <!-- BOTÓN TODOS -->
+            <button type="submit" name="estado" value="" 
+                    class="btn btn-outline-dark {% if estado_seleccionado == '' %}active{% endif %}">
+                Todos
+            </button>
+            <button type="submit" name="estado" value="pendiente" 
+                    class="btn btn-outline-secondary {% if estado_seleccionado == 'pendiente' %}active{% endif %}">
+                Pendiente
+            </button>
+            <button type="submit" name="estado" value="en progreso" 
+                    class="btn btn-outline-secondary {% if estado_seleccionado == 'en progreso' %}active{% endif %}">
+                En progreso
+            </button>
+            <button type="submit" name="estado" value="completada" 
+                    class="btn btn-outline-secondary {% if estado_seleccionado == 'completada' %}active{% endif %}">
+                Completada
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros de prioridad -->
+    <div class="mb-3">
+        <label class="form-label">Filtrar por prioridad:</label>
+        <div class="btn-group d-flex flex-wrap gap-2" role="group">
+            <!-- BOTÓN TODAS -->
+            <button type="submit" name="prioridad" value="" 
+                    class="btn btn-outline-dark {% if prioridad_seleccionada == '' %}active{% endif %}">
+                Todas
+            </button>
+            <button type="submit" name="prioridad" value="alta" 
+                    class="btn btn-outline-danger {% if prioridad_seleccionada == 'alta' %}active{% endif %}">
+                Alta
+            </button>
+            <button type="submit" name="prioridad" value="media" 
+                    class="btn btn-outline-warning {% if prioridad_seleccionada == 'media' %}active{% endif %}">
+                Media
+            </button>
+            <button type="submit" name="prioridad" value="baja" 
+                    class="btn btn-outline-success {% if prioridad_seleccionada == 'baja' %}active{% endif %}">
+                Baja
+            </button>
+        </div>
+    </div>
+</form>
+
+<!-- Resultados -->
+{% if resultados %}
+    <ul class="list-group">
+    {% for t in resultados %}
+        {% set estado_color = '' %}
+        {% if t.estado.lower() == 'completada' %}
+            {% set estado_color = 'text-success' %}
+        {% elif t.estado.lower() == 'en progreso' %}
+            {% set estado_color = 'text-primary' %}
+        {% elif t.estado.lower() == 'pendiente' %}
+            {% set estado_color = 'text-danger' %}
+        {% endif %}
+
+        <li class="list-group-item">
+            <strong class="{{ estado_color }}">[{{ t.estado|capitalize }}]</strong> {{ t.titulo }} - {{ t.descripcion }} 
+            {% if t.fecha_vencimiento %} (vence: {{ t.fecha_vencimiento }}) {% endif %}
+            | Prioridad: {{ t.prioridad|capitalize }}
+        </li>
+    {% endfor %}
+    </ul>
+
+{% elif resultados is not none %}
+    <div class="alert alert-warning mt-4">No se encontraron tareas.</div>
+{% endif %}
+
+{% endblock %}

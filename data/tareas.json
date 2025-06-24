@@ -1,0 +1,68 @@
+[
+    {
+        "titulo": "Estudiar para la prueba",
+        "descripcion": "Cap\u00edtulos 1 al 5",
+        "estado": "completada",
+        "fecha_vencimiento": "25-06-2025",
+        "prioridad": "alta",
+        "subtareas": [
+            {
+                "nombre": "Leer cap\u00edtulo 1",
+                "completada": true
+            },
+            {
+                "nombre": "Leer cap\u00edtulo 2",
+                "completada": true
+            },
+            {
+                "nombre": "Resolver ejercicios",
+                "completada": true
+            },
+            {
+                "nombre": "pel\u00edculas",
+                "completada": false
+            }
+        ]
+    },
+    {
+        "titulo": "Preparar presentaci\u00f3n",
+        "descripcion": "Dise\u00f1ar diapositivas",
+        "estado": "en progreso",
+        "fecha_vencimiento": "28-06-2025",
+        "prioridad": "media",
+        "subtareas": [
+            {
+                "nombre": "Buscar im\u00e1genes",
+                "completada": false
+            },
+            {
+                "nombre": "Redactar texto",
+                "completada": false
+            }
+        ]
+    },
+    {
+        "titulo": "Comprar materiales",
+        "descripcion": "Papeler\u00eda y \u00fatiles",
+        "estado": "completada",
+        "fecha_vencimiento": "20-06-2023",
+        "prioridad": "baja",
+        "subtareas": []
+    },
+    {
+        "titulo": "Prueba",
+        "descripcion": "aaaaa",
+        "estado": "pendiente",
+        "fecha_vencimiento": "20-12-2005",
+        "prioridad": "media",
+        "subtareas": []
+    },
+    {
+        "titulo": "Hola",
+        "descripcion": "aaaa",
+        "estado": "pendiente",
+        "fecha_vencimiento": "20-2-2005",
+        "prioridad": "media",
+        "subtareas": []
+    }
+]

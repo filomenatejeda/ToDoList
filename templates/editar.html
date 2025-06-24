@@ -1,0 +1,33 @@
+<!-- templates/editar_tarea.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Tarea</title>
+</head>
+<body>
+    <h1>Editar tarea: {{ tarea.titulo }}</h1>
+
+    <form method="post">
+        <label>Título:</label>
+        <input type="text" name="titulo" value="{{ tarea.titulo }}"><br>
+
+        <label>Descripción:</label>
+        <input type="text" name="descripcion" value="{{ tarea.descripcion }}"><br>
+
+        <label>Fecha de vencimiento (dd-mm-aaaa):</label>
+        <input type="text" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento }}"><br>
+
+        <label>Prioridad:</label>
+        <select name="prioridad">
+            <option value="alta" {% if tarea.prioridad == 'alta' %}selected{% endif %}>Alta</option>
+            <option value="media" {% if tarea.prioridad == 'media' %}selected{% endif %}>Media</option>
+            <option value="baja" {% if tarea.prioridad == 'baja' %}selected{% endif %}>Baja</option>
+        </select><br>
+
+        <input type="submit" value="Actualizar">
+    </form>
+
+    <a href="{{ url_for('ver_tareas') }}">← Volver a tareas</a>
+</body>
+</html>

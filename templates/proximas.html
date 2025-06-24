@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}Próximas tareas{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">Tareas próximas (en los próximos 3 días)</h1>
+
+{% if tareas %}
+    <ul class="list-group">
+    {% for tarea in tareas %}
+        <li class="list-group-item">
+            <strong>[{{ tarea.estado.upper() }}]</strong> {{ tarea.titulo }} - {{ tarea.descripcion }} 
+            <span class="text-muted">(Vence: {{ tarea.fecha_vencimiento }})</span>
+
+            {% if tarea.subtareas %}
+                <ul class="mt-2 list-group">
+                    {% for subt in tarea.subtareas %}
+                        <li class="list-group-item">
+                            {% if subt.completada %}
+                                ✅
+                            {% else %}
+                                ⬜
+                            {% endif %}
+                            {{ subt.nombre }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted mt-2">No tiene subtareas.</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
+{% endif %}
+
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">← Volver al menú</a>
+
+{% endblock %}

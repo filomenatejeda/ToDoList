@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}Tareas{% endblock %}
+
+{% block content %}
+
+<!-- Botón volver al menú -->
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">← Volver al menú</a>
+
+<h1 class="mb-4">Mis tareas</h1>
+
+
+<div class="accordion" id="accordionTareas">
+
+{% for t in tareas %}
+    {% set tarea_idx = loop.index0 %}
+
+    {# Determinar color por estado #}
+    {% set estado_color = '' %}
+    {% if t.estado.lower() == 'completada' %}
+        {% set estado_color = 'text-success' %}
+    {% elif t.estado.lower() == 'en progreso' %}
+        {% set estado_color = 'text-primary' %}
+    {% elif t.estado.lower() == 'pendiente' %}
+        {% set estado_color = 'text-danger' %}
+    {% endif %}
+
+    <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="heading{{ loop.index }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                <strong class="{{ estado_color }}">[{{ t.estado|capitalize }}]</strong> {{ t.titulo }} - {{ t.descripcion }} 
+                {% if t.fecha_vencimiento %} (vence: {{ t.fecha_vencimiento }}) {% endif %}
+                | Prioridad: {{ t.prioridad|capitalize }}
+            </button>
+        </h2>
+
+        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordionTareas">
+            <div class="accordion-body">
+
+                {% if t.subtareas %}
+                    <h6>Subtareas:</h6>
+                    <ul class="list-group mb-4"> {# mejora: más margen abajo #}
+                    {% for subt in t.subtareas %}
+                        <li class="list-group-item d-flex align-items-center">
+                            <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
+                                <input type="hidden" name="estado_actual" value="{{ '1' if subt.completada else '0' }}">
+                                <input type="checkbox" class="form-check-input me-2" onchange="this.form.submit()" {% if subt.completada %} checked {% endif %}>
+                                <span>{{ subt.nombre }}</span>
+                            </form>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No tiene subtareas.</p>
+                {% endif %}
+
+                <div class="mt-3">
+                    <a href="{{ url_for('eliminar_tarea', indice=tarea_idx) }}" class="btn btn-danger btn-sm me-2">Eliminar</a>
+                    <a href="{{ url_for('cambiar_estado', indice=tarea_idx) }}" class="btn btn-warning btn-sm me-2">Cambiar estado</a>
+                    <a href="{{ url_for('agregar_subtarea', indice=tarea_idx) }}" class="btn btn-info btn-sm">+ Subtarea</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+
+</div> <!-- fin accordion -->
+
+{% endblock %}
