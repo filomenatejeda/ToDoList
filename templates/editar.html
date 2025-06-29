@@ -1,33 +1,40 @@
-<!-- templates/editar_tarea.html -->
+{% extends "layout.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editar Tarea</title>
-</head>
-<body>
-    <h1>Editar tarea: {{ tarea.titulo }}</h1>
+{% block title %}Editar Tarea{% endblock %}
 
-    <form method="post">
-        <label>Título:</label>
-        <input type="text" name="titulo" value="{{ tarea.titulo }}"><br>
+{% block content %}
 
-        <label>Descripción:</label>
-        <input type="text" name="descripcion" value="{{ tarea.descripcion }}"><br>
+<a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary mb-3">← Volver a tareas</a>
 
-        <label>Fecha de vencimiento (dd-mm-aaaa):</label>
-        <input type="text" name="fecha_vencimiento" value="{{ tarea.fecha_vencimiento }}"><br>
+<h1 class="mb-4">Editar tarea: {{ tarea.titulo }}</h1>
 
-        <label>Prioridad:</label>
-        <select name="prioridad">
+<form method="post" class="mb-5">
+
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título:</label>
+        <input type="text" id="titulo" name="titulo" class="form-control" value="{{ tarea.titulo }}">
+    </div>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" class="form-control" value="{{ tarea.descripcion }}">
+    </div>
+
+    <div class="mb-3">
+        <label for="fecha_vencimiento" class="form-label">Fecha de vencimiento (dd-mm-aaaa):</label>
+        <input type="text" id="fecha_vencimiento" name="fecha_vencimiento" class="form-control" value="{{ tarea.fecha_vencimiento }}">
+    </div>
+
+    <div class="mb-3">
+        <label for="prioridad" class="form-label">Prioridad:</label>
+        <select id="prioridad" name="prioridad" class="form-select">
             <option value="alta" {% if tarea.prioridad == 'alta' %}selected{% endif %}>Alta</option>
             <option value="media" {% if tarea.prioridad == 'media' %}selected{% endif %}>Media</option>
             <option value="baja" {% if tarea.prioridad == 'baja' %}selected{% endif %}>Baja</option>
-        </select><br>
+        </select>
+    </div>
 
-        <input type="submit" value="Actualizar">
-    </form>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
 
-    <a href="{{ url_for('ver_tareas') }}">← Volver a tareas</a>
-</body>
-</html>
+{% endblock %}

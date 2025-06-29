@@ -33,15 +33,21 @@ class GestorTareasWeb:
 
     def editar_tarea(self, indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad):
         tarea = self.lista_tareas[indice]
-        if nuevo_titulo.strip():
-            tarea.titulo = nuevo_titulo
-        if nueva_desc.strip():
-            tarea.descripcion = nueva_desc
-        if nueva_fecha.strip():
-            tarea.fecha_vencimiento = nueva_fecha
-        if nueva_prioridad.strip().lower() in ["alta", "media", "baja"]:
-            tarea.prioridad = nueva_prioridad.lower()
+
+        if nuevo_titulo and nuevo_titulo.strip():
+            tarea.titulo = nuevo_titulo.strip()
+
+        if nueva_desc and nueva_desc.strip():
+            tarea.descripcion = nueva_desc.strip()
+
+        if nueva_fecha and nueva_fecha.strip():
+            tarea.fecha_vencimiento = nueva_fecha.strip()
+
+        if nueva_prioridad and nueva_prioridad.strip().lower() in ["alta", "media", "baja"]:
+            tarea.prioridad = nueva_prioridad.strip().lower()
+
         self.guardar_en_archivo()
+
 
     def agregar_subtarea(self, indice, subtarea):
         tarea = self.lista_tareas[indice]
