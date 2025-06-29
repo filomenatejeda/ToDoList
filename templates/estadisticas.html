@@ -1,15 +1,20 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Estadísticas{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 <h1 class="mb-4">
     <i class="bi bi-bar-chart-line me-2"></i> Estadísticas
 </h1>
 
+<!-- Si hay tareas sobre las que mostrar estadísticas, se muestran -->
 {% if hay_tareas %}
 <!-- Tarjetas resumen -->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
+    <!-- Para cada estado de tareas (completadas, en progreso y pendientes) se muestra un cuadro con métricas básicas (cantidad y porcentaje que les corresponden del total) -->
     {% for cpt in conjunto_porcentajes_tareas %}
     <div class="col">
         <div class="card shadow-sm border-0">
@@ -49,6 +54,7 @@
 <hr class="my-4">
 <h5 class="mb-3"><i class="bi bi-clock-history me-2"></i> Historial reciente de tareas completadas</h5>
 <div class="list-group">
+    <!-- Por cada elemento de cantidades_ultimas_tareas_completadas muestra la cantidad de tareas que se han completado en los últimos días (hoy, ayer, últimos 7 y 30 días respectivamente) -->
     {% for cutc in cantidades_ultimas_tareas_completadas %}
     <div class="list-group-item d-flex justify-content-between align-items-center">
         {% if cutc[0] == 0 %}
@@ -63,23 +69,30 @@
     {% endfor %}
 </div>
 
+<!-- En caso de que no hayan tareas, se considera ese caso y se muestra un texto que avise que no hay tareas sobre las que obtener estadísticas -->
 {% else %}
 <div class="alert alert-info mt-3">No hay tareas para mostrar estadísticas.</div>
 {% endif %}
 
+<!-- Botón para regresar al menú principal -->
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">&larr; Volver al menú</a>
 
-<!-- Chart.js + Script sin llaves dentro -->
+<!-- Chart.js + Script, que solo se usarán si es que hay tareas sobre las que obtener estadísticas -->
 {% if hay_tareas %}
+<!-- Script para el gráfico de círculo -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Script para rellenar el gráfico de círculo -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // Obtiene el contexto del gráfico
     const ctx = document.getElementById('pieChart').getContext('2d');
 
+    // Obtiene la información de las tareas
     const datosTareas = JSON.parse(
         document.getElementById('datos-tareas').getAttribute('data-json')
     );
 
+    // Construye la información para el gráfico
     const data = {
         labels: ['Completadas', 'En progreso', 'Pendientes'],
         datasets: [{
@@ -89,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }]
     };
 
+    // Crea las configuraciones del gráfico
     const config = {
         type: 'pie',
         data: data,
@@ -102,9 +116,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
+    // Crea el gráfico con el contexto adecuado y las configuraciones ya creadas
     new Chart(ctx, config);
 });
 </script>
 {% endif %}
 
+<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}
