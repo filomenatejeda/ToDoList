@@ -69,6 +69,7 @@ Abre tu navegador en `http://127.0.0.1:5000` y podrás:
 - Agregar nuevas tareas y subtareas
 - Editar, eliminar, y marcar tareas como completadas
 - Filtrar por prioridad, estado y categoría
+- Consultar estadísticas dinámicas con gráficos
 - Buscar tareas por palabra clave
 
 ---
@@ -80,6 +81,8 @@ También puedes usar la aplicación desde la terminal con:
 ```bash
 python -m terminal.main
 ```
+Cabe destaacr qu ees la base, por lo que no necesariamente cumple con todos los criterios, es el boceto del proyecto, la idea original.
+
 
 Este modo permite una gestión simple basada en texto, ideal para quienes prefieren trabajar sin interfaz gráfica.
 
@@ -99,9 +102,23 @@ todolist/
 ├── core/                 # Modelo de tarea y validaciones
 │   ├── tarea.py
 │   └── validacion.py
-├── templates/            # HTML con Jinja2 y Bootstrap
+├── templates/                # Plantillas HTML + Bootstrap
+│   ├── agregar.html          # Página para agregar nuevas tareas
+│   ├── agregar_subtarea.html # Página para agregar subtareas a una tarea específica
+│   ├── buscar.html           # Página para buscar tareas por texto o palabra clave
+│   ├── editar.html           # Página para editar el contenido de una tarea existente
+│   ├── estadisticas.html     # Página que muestra estadísticas y gráficos de tareas
+│   ├── layout.html           # Plantilla base con cabecera, estilos y bloque de contenido
+│   ├── menu.html             # Plantilla base con cabecera, estilos y bloque de contenido
+│   ├── proximas.html         # Vista de tareas próximas a vencer
+│   └── tareas.html           # Vista general de todas las tareas activas
 ├── data/                 # JSON con persistencia
-│   └── tareas.json
+│   └── tareas.json       # Archivo que almacena todas las tareas (y subtareas)
+├── static/
+│   ├── img/                  # Íconos
+│   │   └── check2-square.ico # Archivos estáticos (favicon, JS)
+│   └── js/                   # Scripts JS opcionales
+│       └── toggle.js         # Script para cambiar estado de subtareas vía fetch()
 └── README.md
 ```
 
@@ -109,10 +126,8 @@ todolist/
 
 ## Funcionalidades Implementadas
 
-- CRUD de tareas  
-- Subtareas por tarea  
+- CRUD de tareas  y subtareas 
 - Filtros por estado, prioridad y categoría  
-- Ordenamiento por fecha y estado  
 - Visualización de próximas tareas  
 - Almacenamiento persistente en archivo JSON  
 - Búsqueda por texto  
