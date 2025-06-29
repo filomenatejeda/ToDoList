@@ -27,6 +27,12 @@
     </div>
 
     <div class="mb-3">
+    <label class="form-label">Categoría</label>
+    <input type="text" name="categoria" class="form-control" value="{{ categoria or '' }}">
+    </div>
+
+
+    <div class="mb-3">
         <label class="form-label">Prioridad</label>
         <select name="prioridad" class="form-select">
             <option value="alta" {% if prioridad == 'alta' %}selected{% endif %}>Alta</option>

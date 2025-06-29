@@ -31,7 +31,7 @@ class GestorTareasWeb:
                 tarea.estado = "completada"
             self.guardar_en_archivo()
 
-    def editar_tarea(self, indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad):
+    def editar_tarea(self, indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria):
         tarea = self.lista_tareas[indice]
 
         if nuevo_titulo and nuevo_titulo.strip():
@@ -45,7 +45,8 @@ class GestorTareasWeb:
 
         if nueva_prioridad and nueva_prioridad.strip().lower() in ["alta", "media", "baja"]:
             tarea.prioridad = nueva_prioridad.strip().lower()
-
+        if nueva_categoria is not None:
+            tarea.categoria = nueva_categoria.strip()
         self.guardar_en_archivo()
 
     def buscar_tareas(self, palabra_clave):

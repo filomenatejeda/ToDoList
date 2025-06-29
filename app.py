@@ -29,12 +29,14 @@ def agregar_tarea():
     descripcion = ""
     fecha = ""
     prioridad = "media"
+    categoria = ""
 
     if request.method == "POST":
         titulo = request.form.get("titulo")
         descripcion = request.form.get("descripcion")
         fecha = request.form.get("fecha")
         prioridad = request.form.get("prioridad", "media")
+        categoria = request.form.get("categoria", "")
 
         if not validar_titulo(titulo):
             return render_template("agregar.html", 
@@ -54,11 +56,11 @@ def agregar_tarea():
                 prioridad=prioridad
         )
 
-    # ✅ FORMATEAR:
+    # FORMATEAR:
         fecha_formateada = formatear_fecha(fecha)
 
     # Crear tarea:
-        tarea = Tarea(titulo, descripcion, "pendiente", fecha_formateada, prioridad)
+        tarea = Tarea(titulo, descripcion, "pendiente", fecha_formateada, prioridad, categoria=categoria)
         gestor.agregar_tarea(tarea)
         return redirect(url_for("ver_tareas"))
 
@@ -67,7 +69,8 @@ def agregar_tarea():
         titulo=titulo,
         descripcion=descripcion,
         fecha=fecha,
-        prioridad=prioridad
+        prioridad=prioridad,
+        categoria=categoria
     )
 
 
@@ -95,8 +98,9 @@ def editar_tarea(indice):
         nueva_desc = request.form.get("descripcion")
         nueva_fecha = request.form.get("fecha")
         nueva_prioridad = request.form.get("prioridad", "media")
+        nueva_categoria = request.form.get("categoria", "")
 
-        gestor.editar_tarea(indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad)
+        gestor.editar_tarea(indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria)
         return redirect(url_for("ver_tareas"))
 
     return render_template("editar.html", tarea=tarea, indice=indice)

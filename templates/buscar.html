@@ -79,7 +79,9 @@
         <li class="list-group-item">
             <strong class="{{ estado_color }}">[{{ t.estado|capitalize }}]</strong> {{ t.titulo }} - {{ t.descripcion }} 
             {% if t.fecha_vencimiento %} (vence: {{ t.fecha_vencimiento }}) {% endif %}
-            | Prioridad: {{ t.prioridad|capitalize }}
+            | Prioridad: {{ t.prioridad|capitalize }} 
+            | Categoría: {{ t.categoria or "Sin categoría" }}
+
         </li>
     {% endfor %}
     </ul>
