@@ -32,6 +32,11 @@
     {% endfor %}
 </div>
 
+<!-- Contenedor para pasar los datos al JS -->
+<div id="datos-tareas"
+     data-json="{{ conjunto_porcentajes_tareas | map(attribute=1) | list | tojson }}">
+</div>
+
 <!-- Gráfico de pastel -->
 <div class="my-5">
     <h4 class="fw-semibold text-center">Distribución de tareas por estado</h4>
@@ -64,25 +69,29 @@
 
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">&larr; Volver al menú</a>
 
-<!-- Chart.js (solo si hay tareas) -->
+<!-- Chart.js + Script sin llaves dentro -->
 {% if hay_tareas %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     const ctx = document.getElementById('pieChart').getContext('2d');
-    new Chart(ctx, {
+
+    const datosTareas = JSON.parse(
+        document.getElementById('datos-tareas').getAttribute('data-json')
+    );
+
+    const data = {
+        labels: ['Completadas', 'En progreso', 'Pendientes'],
+        datasets: [{
+            label: 'Estado de Tareas',
+            data: datosTareas,
+            backgroundColor: ['#198754', '#0d6efd', '#dc3545']
+        }]
+    };
+
+    const config = {
         type: 'pie',
-        data: {
-            labels: ['Completadas', 'En progreso', 'Pendientes'],
-            datasets: [{
-                label: 'Estado de Tareas',
-                data: [
-                     {{conjunto_porcentajes_tareas[0][1]}}, 
-                     {{conjunto_porcentajes_tareas[1][1]}},
-                     {{conjunto_porcentajes_tareas[2][1]}}
-                ],
-                backgroundColor: ['#198754', '#0d6efd', '#dc3545']
-            }]
-        },
+        data: data,
         options: {
             responsive: true,
             plugins: {
@@ -91,7 +100,10 @@
                 }
             }
         }
-    });
+    };
+
+    new Chart(ctx, config);
+});
 </script>
 {% endif %}
 
