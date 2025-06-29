@@ -128,7 +128,7 @@ def editar_tarea(indice):
         gestor.editar_tarea(indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria)
         return redirect(url_for("ver_tareas"))
 
-    return render_template("editar.html", tarea=tarea, indice=indice)
+    return render_template("editar.html", tarea=tarea, indice=indice, origen="tareas")
 
 @app.route("/editar_tarea_buscar/<int:indice>", methods=["GET", "POST"])
 def editar_tarea_buscar(indice):
@@ -143,7 +143,7 @@ def editar_tarea_buscar(indice):
         gestor.editar_tarea(indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria)
         return redirect(url_for("buscar_tareas"))
 
-    return render_template("editar.html", tarea=tarea, indice=indice)
+    return render_template("editar.html", tarea=tarea, indice=indice, origen="buscar")
 
 @app.route("/buscar", methods=["GET", "POST"])
 def buscar_tareas():

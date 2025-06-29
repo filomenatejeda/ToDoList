@@ -4,7 +4,11 @@
 
 {% block content %}
 
-<a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary mb-3">← Volver a tareas</a>
+{% if origen == "tareas" %}
+    <a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary mb-3">← Volver a tareas</a>
+{% elif origen == "buscar" %}
+    <a href="{{ url_for('buscar_tareas') }}" class="btn btn-secondary mb-3">← Volver a búsqueda</a>
+{% endif %}
 
 <h1 class="mb-4">Editar tarea: {{ tarea.titulo }}</h1>
 
