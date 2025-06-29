@@ -2,27 +2,27 @@
     {
         "titulo": "Estudiar para la prueba",
         "descripcion": "Cap\u00edtulos 1 al 5",
-        "estado": "pendiente",
+        "estado": "completada",
         "fecha_creacion": null,
-        "fecha_completada": null,
+        "fecha_completada": "29-06-2025",
         "fecha_vencimiento": "25-06-2025",
         "prioridad": "baja",
         "subtareas": [
             {
                 "nombre": "Leer cap\u00edtulo 1",
-                "completada": false
+                "completada": true
             },
             {
                 "nombre": "Leer cap\u00edtulo 2",
-                "completada": false
+                "completada": true
             },
             {
                 "nombre": "Resolver ejercicios",
-                "completada": false
+                "completada": true
             },
             {
                 "nombre": "Ver documental",
-                "completada": false
+                "completada": true
             }
         ],
         "categoria": "Universidad"

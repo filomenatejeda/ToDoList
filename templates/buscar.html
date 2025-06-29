@@ -70,7 +70,7 @@
                         <h5 class="mb-1 fw-semibold">{{ t.titulo }}</h5>
                         <p class="mb-1 text-muted small">{{ t.descripcion }}</p>
                         <div class="d-flex flex-wrap gap-2">
-                            <span class="badge bg-light text-dark border">{{ t.estado|capitalize }}</span>
+                            <span class="badge bg-light text-dark border estado-tarea">{{ t.estado|capitalize }}</span>
                             <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Prioridad: {{ t.prioridad|capitalize }}</span>
                             <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Categoría: {{ t.categoria or "Sin categoría" }}</span>
                             {% if t.fecha_vencimiento %}
@@ -100,7 +100,7 @@
                             <ul class="list-group mb-3">
                                 {% for subt in t.subtareas %}
                                     <li class="list-group-item d-flex align-items-center">
-                                        <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0, origen='buscar_tareas') }}" class="d-flex align-items-center w-100">
+                                        <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
                                             <input type="hidden" name="estado_actual" value="{{ '1' if subt.completada else '0' }}">
                                             <input type="checkbox" class="form-check-input me-2" onchange="toggleSubtarea(this)" data-url="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" {% if subt.completada %} checked {% endif %}>
                                             <span>{{ subt.nombre }}</span>
