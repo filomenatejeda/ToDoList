@@ -32,15 +32,6 @@ class GestorTareasWeb:
             self.lista_tareas[indice].estado = "completada"
             self.guardar_en_archivo()
 
-    def cambiar_estado_tarea(self, indice):
-        if 0 <= indice < len(self.lista_tareas):
-            tarea = self.lista_tareas[indice]
-            if tarea.estado == "pendiente":
-                tarea.estado = "en progreso"
-            elif tarea.estado == "en progreso":
-                tarea.estado = "completada"
-            self.guardar_en_archivo()
-
     def editar_tarea(self, indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria):
         tarea = self.lista_tareas[indice]
 

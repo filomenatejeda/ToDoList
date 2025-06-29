@@ -95,11 +95,6 @@ def marcar_completada(indice):
     gestor.marcar_completada(indice)
     return redirect(url_for("ver_tareas"))
 
-@app.route("/cambiar_estado/<int:indice>")
-def cambiar_estado(indice):
-    gestor.cambiar_estado_tarea(indice)
-    return redirect(url_for("ver_tareas"))
-
 @app.route("/editar/<int:indice>", methods=["GET", "POST"])
 def editar_tarea(indice):
     tarea = gestor.lista_tareas[indice]
