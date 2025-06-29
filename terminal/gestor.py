@@ -115,9 +115,11 @@ class GestorTareas:
                 except ValueError:
                     incluir = False
 
+            # Si la tarea cumple con los filtros, se agrega a la lista de tareas filtradas
             if incluir:
                 tareas_filtradas.append(t)
 
+        # Se ordenan las tareas filtradas según el criterio especificado
         if ordenar_por == "fecha":
             tareas_filtradas.sort(key=lambda t: datetime.strptime(t.fecha_vencimiento, "%d-%m-%Y") if t.fecha_vencimiento else datetime.max)
         elif ordenar_por == "estado":
@@ -125,14 +127,19 @@ class GestorTareas:
         elif ordenar_por == "prioridad":
             tareas_filtradas.sort(key=lambda t: {"alta": 1, "media": 2, "baja": 3}.get(t.prioridad, 2))
 
+        # Se muestra la lista de tareas filtradas
         print("\n=== LISTA DE TAREAS ===")
+        # Se obtiene la fecha actual para verificar si las tareas están vencidas
         hoy = datetime.today()
 
+        # Se recorre la lista de tareas filtradas, se muestra su estado y fecha de vencimiento
         for tarea in tareas_filtradas:
             vencida = ""
             if tarea.fecha_vencimiento:
                 try:
+                    # Se intenta convertir la fecha de vencimiento de la tarea a un objeto datetime
                     fecha_tarea_dt = datetime.strptime(tarea.fecha_vencimiento, "%d-%m-%Y")
+                    # Se verifica si la tarea está vencida
                     if fecha_tarea_dt < hoy:
                         vencida = "  VENCIDA"
                 except ValueError:
@@ -140,29 +147,37 @@ class GestorTareas:
 
             print(f"[{tarea.estado.upper()}] {tarea.titulo} - {tarea.descripcion} (Vence: {tarea.fecha_vencimiento}) [Prioridad: {tarea.prioridad.upper()}]{vencida}")
 
+            # Si la tarea tiene subtareas, se muestran
             if tarea.subtareas:
                 print("  Subtareas:")
                 for idx, subtarea in enumerate(tarea.subtareas, 1):
                     print(f"    {idx}. {subtarea}")
 
+    # Se define el método para guardar las tareas en un archivo JSON
     def guardar_en_archivo(self, archivo="data/tareas.json"):
         try:
+            # Se abre el archivo en modo escritura y se guarda la lista de tareas en formato JSON
             with open(archivo, "w", encoding="utf-8") as f:
                 json.dump([tarea.to_dict() for tarea in self.lista_tareas], f, indent=4)
         except Exception as e:
             print(f"Error al guardar: {e}")
 
+    # Se define el método para cargar las tareas desde un archivo JSON
     def cargar_desde_archivo(self, archivo="data/tareas.json"):
         try:
+            # Se abre el archivo en modo lectura y se carga la lista de tareas desde formato JSON
             with open(archivo, "r", encoding="utf-8") as f:
                 tareas_cargadas = json.load(f)
                 self.lista_tareas = [Tarea.from_dict(t) for t in tareas_cargadas]
+        # Si no se encuentra el archivo, se muestra un mensaje de error
         except FileNotFoundError:
             print("No se encontró archivo, empezando con lista vacía.")
         except Exception as e:
             print(f"Error al cargar: {e}")
 
+    # Se define el método para editar una tarea
     def editar_tarea(self, titulo):
+        # Se recorre la lista de tareas y se busca la tarea con el título especificado
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
                 print(f"Editando tarea: {tarea.titulo}")
@@ -185,6 +200,7 @@ class GestorTareas:
                 return
         print(f"No se encontró tarea con título '{titulo}'.")
 
+    # Se define el método para cambiar el estado de una tarea
     def cambiar_estado_tarea(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
@@ -201,6 +217,7 @@ class GestorTareas:
                 return
         print(f"No se encontró tarea con título '{titulo}'.")
 
+    # Se define el método para buscar tareas por palabra clave en título o descripción
     def buscar_tareas(self, palabra_clave):
         resultados = [t for t in self.lista_tareas if palabra_clave.lower() in t.titulo.lower() or palabra_clave.lower() in t.descripcion.lower()]
         if resultados:
@@ -210,6 +227,7 @@ class GestorTareas:
         else:
             print("No se encontraron tareas con esa palabra clave.")
 
+    # Se define el método para agregar una subtarea a una tarea existente
     def agregar_subtarea(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
@@ -220,20 +238,25 @@ class GestorTareas:
                 return
         print(f"No se encontró tarea con título '{titulo}'.")
 
+    # Se define el método para mostrar las próximas tareas que vencen en un plazo determinado de días
     def mostrar_proximas_tareas(self, dias=3):
+        # Se obtiene la fecha actual y se calcula la fecha límite sumando los días especificados
         hoy = datetime.today()
         limite = hoy + timedelta(days=dias)
 
         proximas = []
+        # Se recorre la lista de tareas y se verifica si la fecha de vencimiento está dentro del rango límite
         for t in self.lista_tareas:
             if t.fecha_vencimiento:
                 try:
+                    # Se intenta convertir la fecha de vencimiento de la tarea a un objeto datetime
                     fecha_tarea = datetime.strptime(t.fecha_vencimiento, "%d-%m-%Y")
                     if hoy <= fecha_tarea <= limite:
                         proximas.append(t)
                 except ValueError:
                     pass
 
+        # Se muestra la lista de tareas próximas a vencer
         if proximas:
             print(f"\nEstas tareas vencen en los próximos {dias} días:")
             for t in proximas:
@@ -241,6 +264,7 @@ class GestorTareas:
         else:
             print("\nNo hay tareas próximas a vencer.")
 
+# Se define el método para eliminar una tarea por título
 def eliminar_tarea_por_titulo(self, titulo):
     self.lista_tareas = [t for t in self.lista_tareas if t.titulo != titulo]
     self.guardar_en_archivo()

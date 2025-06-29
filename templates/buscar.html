@@ -1,22 +1,29 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Buscar tareas{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+<!-- Se muestra el botón de volver al menú -->
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">
     <i class="bi bi-arrow-left"></i> Volver al menú
 </a>
 
+<!-- Se muestra el título de la página -->
 <h1 class="mb-4">Búsqueda</h1>
 
 <!-- Formulario de búsqueda general -->
 <form method="post" class="mb-4">
     <div class="mb-4">
+        <!-- Se muestra el campo de búsqueda -->
         <div class="input-group shadow-sm rounded-3 overflow-hidden">
             <span class="input-group-text bg-white border-end-0">
                 <i class="bi bi-search"></i>
             </span>
+            <!-- Se muestra el campo de texto de búsqueda -->
             <input type="text" name="texto" value="{{ texto or '' }}"
                    class="form-control border-start-0 border-secondary-subtle rounded-0"
                    placeholder="Buscar por palabra clave...">
@@ -24,10 +31,12 @@
         </div>
     </div>
 
-    <!-- Filtros de estado -->
+    <!-- Se muestra el formulario de filtros de estado -->
     <div class="mb-3">
+        <!-- Se muestra el campo de filtros de estado -->
         <label class="form-label">Filtrar por estado:</label>
         <div class="btn-group d-flex flex-wrap gap-2" role="group">
+            <!-- Se define una lista de estados y se itera sobre ella para crear los botones -->
             {% set estados = [('','Todos'), ('pendiente','Pendiente'), ('en progreso','En progreso'), ('completada','Completada')] %}
             {% for value, label in estados %}
                 <button type="submit" name="estado" value="{{ value }}"
@@ -38,10 +47,12 @@
         </div>
     </div>
 
-    <!-- Filtros de prioridad -->
+    <!-- Se muestra el formulario de filtros de prioridad -->
     <div class="mb-3">
+        <!-- Se muestra el campo de filtros de prioridad -->
         <label class="form-label">Filtrar por prioridad:</label>
         <div class="btn-group d-flex flex-wrap gap-2" role="group">
+            <!-- Se define una lista de prioridades y se itera sobre ella para crear los botones -->
             {% set prioridades = [('','Todas'), ('alta','Alta'), ('media','Media'), ('baja','Baja')] %}
             {% for value, label in prioridades %}
                 <button type="submit" name="prioridad" value="{{ value }}"
@@ -59,30 +70,37 @@
     </div>
 </form>
 
-<!-- Resultados -->
+<!-- Se muestra los resultados de la búsqueda -->
 {% if resultados %}
     <div class="accordion" id="accordionBusqueda">
+        <!-- Se itera sobre los resultados de la búsqueda y se muestra cada uno -->
         {% for t in resultados %}
+            <!-- Se asigna el índice del ítem a la variable tarea_idx -->
             {% set tarea_idx = loop.index0 %}
             <div class="accordion-item mb-4 border-0 rounded-4 shadow-sm bg-white">
                 <div class="accordion-header d-flex justify-content-between align-items-start px-4 py-3">
                     <div class="d-flex flex-column">
+                        <!-- Se muestra el título de la tarea -->
                         <h5 class="mb-1 fw-semibold">{{ t.titulo }}</h5>
+                        <!-- Se muestra la descripción de la tarea -->
                         <p class="mb-1 text-muted small">{{ t.descripcion }}</p>
                         <div class="d-flex flex-wrap gap-2">
                             <span class="badge bg-light text-dark border estado-tarea">{{ t.estado|capitalize }}</span>
                             <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Prioridad: {{ t.prioridad|capitalize }}</span>
                             <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Categoría: {{ t.categoria or "Sin categoría" }}</span>
+                            <!-- Si la tarea tiene fecha de vencimiento, se muestra -->
                             {% if t.fecha_vencimiento %}
                                 <span class="badge bg-warning-subtle border border-warning-subtle fw-semibold" style="color: #8a6d1a;">Vence: {{ t.fecha_vencimiento }}</span>
                             {% endif %}
                         </div>
                     </div>
 
+                    <!-- Se muestra el botón de editar la tarea -->
                     <div class="d-flex align-items-start mt-1">
                         <a href="{{ url_for('editar_tarea_buscar', indice=tarea_idx) }}" class="task-icon me-3" title="Editar tarea">
                             <i class="bi bi-pencil"></i>
                         </a>
+                        <!-- Se muestra el botón de alternar la tarea -->
                         <button class="btn btn-sm btn-chevron toggle-arrow" type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#collapseBusqueda{{ loop.index }}"
@@ -93,11 +111,15 @@
                     </div>
                 </div>
 
+                <!-- Cuerpo del acordeón -->
                 <div id="collapseBusqueda{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionBusqueda">
                     <div class="accordion-body">
+                        <!-- Si la tarea tiene subtareas, se muestran -->
                         {% if t.subtareas %}
+                            <!-- Se muestra el título de las subtareas -->
                             <h6>Subtareas:</h6>
                             <ul class="list-group mb-3">
+                                <!-- Se itera sobre las subtareas y se muestra cada una -->
                                 {% for subt in t.subtareas %}
                                     <li class="list-group-item d-flex align-items-center">
                                         <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
@@ -109,20 +131,27 @@
                                 {% endfor %}
                             </ul>
                         {% else %}
+                            <!-- Si no tiene subtareas, se muestra un mensaje -->
                             <p class="text-muted">No tiene subtareas.</p>
                         {% endif %}
 
                         <div class="mt-3">
+                            <!-- Se muestra el botón de eliminar la tarea -->
                             <a href="{{ url_for('eliminar_tarea_buscar', indice=tarea_idx) }}" class="btn btn-danger btn-sm me-2">Eliminar</a>
                             {% if t.estado == "pendiente" %}
+                                <!-- Se muestra el botón de marcar la tarea como en progreso, si el estado actual es pendiente -->
                                 <a href="{{ url_for('marcar_progreso_buscar', indice=tarea_idx) }}" class="btn btn-success btn-sm me-2">Marcar como en progreso</a>
                             {% elif t.estado == "en progreso" %}
+                                <!-- Se muestra los botones de marcar la tarea como pendiente o completada, si el estado actual es en progreso -->
                                 <a href="{{ url_for('marcar_pendiente_buscar', indice=tarea_idx) }}" class="btn btn-warning btn-sm me-2">Marcar como pendiente</a>
                                 <a href="{{ url_for('marcar_completada_buscar', indice=tarea_idx) }}" class="btn btn-success btn-sm me-2">Marcar como completada</a>
                             {% else %}
+                                <!-- Si la tarea ya está completada, se muestra el botón de marcar como en progreso -->
                                 <a href="{{ url_for('marcar_progreso_buscar', indice=tarea_idx) }}" class="btn btn-warning btn-sm me-2">Marcar como en progreso</a>
                             {% endif %}
+                            <!-- Se muestra el botón de agregar una subtarea -->
                             <a href="{{ url_for('agregar_subtarea_buscar', indice=tarea_idx) }}" class="btn btn-info btn-sm me-2">+ Subtarea</a>
+                            <!-- Se muestra el botón de editar la tarea -->
                             <a href="{{ url_for('editar_tarea_buscar', indice=tarea_idx) }}" class="btn btn-secondary btn-sm">Editar tarea</a>
                         </div>
                     </div>
@@ -130,10 +159,12 @@
             </div>
         {% endfor %}
     </div>
+<!-- Si no hay resultados, se muestra un mensaje informativo -->
 {% elif resultados is not none %}
     <div class="alert alert-warning mt-4">No se encontraron tareas.</div>
 {% endif %}
 
 <script src="{{ url_for('static', filename='js/toggle.js') }}"></script>
 
+<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}

@@ -1,38 +1,49 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Agregar tarea{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+<!-- Se muestra el botón de volver al menú -->
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">← Volver al menú</a>
+<!-- Se muestra el título de la página -->
 <h1 class="mb-4">Agregar tarea</h1>
 {% if error %}
     <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
+<!-- Se muestra el formulario de agregar tarea -->
 <form method="post" class="card card-body">
     <div class="mb-3">
+        <!-- Se muestra el campo de título de la tarea -->
         <label class="form-label">Título</label>
         <input type="text" name="titulo" class="form-control" required value="{{ titulo or '' }}">
     </div>
 
     <div class="mb-3">
+    <!-- Se muestra el campo de descripción de la tarea -->
         <label class="form-label">Descripción</label>
         <input type="text" name="descripcion" class="form-control" value="{{ descripcion or '' }}">
     </div>
 
     <div class="mb-3">
+        <!-- Se muestra el campo de fecha de vencimiento de la tarea -->
         <label class="form-label">Fecha (dd-mm-aaaa)</label>
         <input type="text" name="fecha" class="form-control" value="{{ fecha or '' }}">
     </div>
 
     <div class="mb-3">
+        <!-- Se muestra el campo de categoría de la tarea -->
     <label class="form-label">Categoría</label>
     <input type="text" name="categoria" class="form-control" value="{{ categoria or '' }}">
     </div>
 
 
     <div class="mb-3">
+        <!-- Se muestra el campo de prioridad de la tarea -->
         <label class="form-label">Prioridad</label>
         <select name="prioridad" class="form-select">
             <option value="alta" {% if prioridad == 'alta' %}selected{% endif %}>Alta</option>
@@ -41,7 +52,9 @@
         </select>
     </div>
 
+    <!-- Se muestra el botón de agregar tarea -->
     <button type="submit" class="btn btn-primary">Agregar tarea</button>
 </form>
 
+<!-- Se cierra la etiqueta del formulario -->
 {% endblock %}

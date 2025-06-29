@@ -1,27 +1,38 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Próximas tareas{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+<!-- Se muestra el botón de volver al menú -->
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">
     <i class="bi bi-arrow-left"></i> Volver al menú
 </a>
 
+<!-- Se muestra el título de la página -->
 <h1 class="mb-4">Tareas próximas (en los próximos 3 días)</h1>
 
+<!-- Si hay tareas próximas a vencer, se muestran -->
 {% if tareas %}
     <div class="d-flex flex-column gap-3">
+    <!-- Se itera sobre las tareas y se muestra cada una -->
     {% for tarea in tareas %}
         <div class="accordion-item mb-4 border-0 rounded-4 shadow-sm bg-white px-4 py-3">
             <div class="d-flex justify-content-between align-items-start">
                 <div class="d-flex flex-column">
+                    <!-- Se muestra el titulo de la tarea -->
                     <h5 class="mb-1 fw-semibold">{{ tarea.titulo }}</h5>
+                    <!-- Se muestra la descripción de la tarea -->
                     <p class="mb-1 text-muted small">{{ tarea.descripcion }}</p>
                     <div class="d-flex flex-wrap gap-2">
+                        <!-- Se muestran las etiquetas de estado, prioridad y categoría -->
                         <span class="badge bg-light text-dark border">{{ tarea.estado|capitalize }}</span>
                         <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Prioridad: {{ tarea.prioridad|capitalize }}</span>
                         <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Categoría: {{ tarea.categoria or "Sin categoría" }}</span>
+                        <!-- Si la tarea tiene fecha de vencimiento, se muestra -->
                         {% if tarea.fecha_vencimiento %}
                             <span class="badge bg-warning-subtle border border-warning-subtle fw-semibold" style="color: #8a6d1a;">Vence: {{ tarea.fecha_vencimiento }}</span>
                         {% endif %}
@@ -29,11 +40,14 @@
                 </div>
             </div>
 
+            <!-- Si la tarea tiene subtareas, se muestran -->
             {% if tarea.subtareas %}
                 <ul class="list-group mt-3">
+                <!-- Se itera sobre las subtareas y se muestra cada una -->
                 {% for subt in tarea.subtareas %}
                     <li class="list-group-item border-0 ps-0">
                         <div class="form-check">
+                            <!-- Se muestra el checkbox para marcar la subtarea como completada -->
                             <input class="form-check-input" type="checkbox" disabled {% if subt.completada %}checked{% endif %}>
                             <label class="form-check-label">
                                 {{ subt.nombre }}
@@ -43,13 +57,16 @@
                 {% endfor %}
                 </ul>
             {% else %}
+                <!-- Si no tiene subtareas, se muestra un mensaje -->
                 <p class="text-muted mt-2 mb-0">No tiene subtareas.</p>
             {% endif %}
         </div>
     {% endfor %}
     </div>
 {% else %}
+    <!-- Si no hay tareas próximas a vencer, se muestra un mensaje informativo -->
     <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
 {% endif %}
 
+<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}

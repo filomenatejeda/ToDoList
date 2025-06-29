@@ -1,25 +1,39 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Estadísticas{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+<!-- Se muestra el título de la página -->
 <h1 class="mb-4">Estadísticas</h1>
 
+<!-- Si hay tareas, se muestran las estadísticas -->
 {% if hay_tareas %}
+    <!-- Se muestra el menú de estadísticas -->
     {% for cpt in conjunto_porcentajes_tareas %}
     <ul class="list-group">
         <li class="list-group-item">
+            <!-- Se muestra el nombre de la categoría y el número de tareas en esa categoría -->
             <p>Tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[1] }}</b></p>
         </li>
         <li class="list-group-item">
+            <!-- Se muestra el porcentaje de tareas completadas en esa categoría -->
             <p>Porcentaje total de tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[2] }}%</b></p>
         </li>
     </ul>
     {% endfor %}
+    <!-- Se muestra la lista de tareas completadas en los últimos días -->
     <ul class="list-group">
+        <!-- Se muestra la lista de tareas completadas en los últimos días -->
         {% for cutc in cantidades_ultimas_tareas_completadas %}
+        <!-- Se muestra la cantidad de tareas completadas en los últimos días -->
         <li class="list-group-item">
+            <!-- Si la cantidad de tareas completadas es 0, se muestra la cantidad de tareas completadas hoy -->
+            <!-- Si la cantidad de tareas completadas es 1, se muestra la cantidad de tareas completadas en el día anterior -->
+            <!-- Si la cantidad de tareas completadas es mayor a 1, se muestra la cantidad de tareas completadas en los últimos días -->
             {% if cutc[0] == 0 %}
             <p>Cantidad de tareas completadas hoy: <b>{{ cutc[1] }}</b></p>
             {% elif cutc[0] == 1 %}
@@ -31,9 +45,12 @@
         {% endfor %}
     </ul>
 {% else %}
+    <!-- Si no hay tareas, se muestra un mensaje informativo -->
     <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
 {% endif %}
 
+<!-- Se muestra el botón de volver al menú -->
 <a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">← Volver al menú</a>
 
+<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}
