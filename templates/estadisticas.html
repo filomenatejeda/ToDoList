@@ -1,56 +1,98 @@
-<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
-<!-- Se define el título de la página -->
 {% block title %}Estadísticas{% endblock %}
 
-<!-- Se define el contenido de la página -->
 {% block content %}
+<h1 class="mb-4">
+    <i class="bi bi-bar-chart-line me-2"></i> Estadísticas
+</h1>
 
-<!-- Se muestra el título de la página -->
-<h1 class="mb-4">Estadísticas</h1>
-
-<!-- Si hay tareas, se muestran las estadísticas -->
 {% if hay_tareas %}
-    <!-- Se muestra el menú de estadísticas -->
+<!-- Tarjetas resumen -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
     {% for cpt in conjunto_porcentajes_tareas %}
-    <ul class="list-group">
-        <li class="list-group-item">
-            <!-- Se muestra el nombre de la categoría y el número de tareas en esa categoría -->
-            <p>Tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[1] }}</b></p>
-        </li>
-        <li class="list-group-item">
-            <!-- Se muestra el porcentaje de tareas completadas en esa categoría -->
-            <p>Porcentaje total de tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[2] }}%</b></p>
-        </li>
-    </ul>
+    <div class="col">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {% if cpt[0] == "completadas" %}
+                        <i class="bi bi-check-circle me-2"></i>
+                    {% elif cpt[0] == "en progreso" %}
+                        <i class="bi bi-arrow-repeat me-2"></i>
+                    {% elif cpt[0] == "pendientes" %}
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                    {% endif %}
+                    {{ cpt[0] | capitalize }}
+                </h5>
+                <p class="card-text mb-1">Cantidad: <b>{{ cpt[1] }}</b></p>
+                <p class="card-text">Porcentaje: <b>{{ cpt[2] }}%</b></p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-    <!-- Se muestra la lista de tareas completadas en los últimos días -->
-    <ul class="list-group">
-        <!-- Se muestra la lista de tareas completadas en los últimos días -->
-        {% for cutc in cantidades_ultimas_tareas_completadas %}
-        <!-- Se muestra la cantidad de tareas completadas en los últimos días -->
-        <li class="list-group-item">
-            <!-- Si la cantidad de tareas completadas es 0, se muestra la cantidad de tareas completadas hoy -->
-            <!-- Si la cantidad de tareas completadas es 1, se muestra la cantidad de tareas completadas en el día anterior -->
-            <!-- Si la cantidad de tareas completadas es mayor a 1, se muestra la cantidad de tareas completadas en los últimos días -->
-            {% if cutc[0] == 0 %}
-            <p>Cantidad de tareas completadas hoy: <b>{{ cutc[1] }}</b></p>
-            {% elif cutc[0] == 1 %}
-            <p>Cantidad de tareas completadas en el día anterior: <b>{{ cutc[1] }}</b></p>
-            {% else %}
-            <p>Cantidad de tareas completadas en los últimos {{ cutc[0] }} días: <b>{{ cutc[1] }}</b> </p>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+</div>
+
+<!-- Gráfico de pastel -->
+<div class="my-5">
+    <h4 class="fw-semibold text-center">Distribución de tareas por estado</h4>
+    <div style="max-width: 400px; margin: auto;">
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
+
+<!-- Historial de tareas completadas -->
+<hr class="my-4">
+<h5 class="mb-3"><i class="bi bi-clock-history me-2"></i> Historial reciente de tareas completadas</h5>
+<div class="list-group">
+    {% for cutc in cantidades_ultimas_tareas_completadas %}
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+        {% if cutc[0] == 0 %}
+            Tareas completadas hoy
+        {% elif cutc[0] == 1 %}
+            Tareas completadas ayer
+        {% else %}
+            Tareas completadas en los últimos {{ cutc[0] }} días
+        {% endif %}
+        <span class="badge bg-primary rounded-pill">{{ cutc[1] }}</span>
+    </div>
+    {% endfor %}
+</div>
+
 {% else %}
-    <!-- Si no hay tareas, se muestra un mensaje informativo -->
-    <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
+<div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
 {% endif %}
 
-<!-- Se muestra el botón de volver al menú -->
-<a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">← Volver al menú</a>
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">&larr; Volver al menú</a>
 
-<!-- Se cierra la etiqueta del contenido -->
+<!-- Chart.js (solo si hay tareas) -->
+{% if hay_tareas %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Completadas', 'En progreso', 'Pendientes'],
+            datasets: [{
+                label: 'Estado de Tareas',
+                data: [
+                     {{conjunto_porcentajes_tareas[0][1]}}, 
+                     {{conjunto_porcentajes_tareas[1][1]}},
+                     {{conjunto_porcentajes_tareas[2][1]}}
+                ],
+                backgroundColor: ['#198754', '#0d6efd', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+
 {% endblock %}

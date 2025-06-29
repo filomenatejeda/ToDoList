@@ -1,33 +1,37 @@
-<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
-<!-- Se define el título de la página -->
 {% block title %}Menú{% endblock %}
 
-<!-- Se define el contenido de la página -->
 {% block content %}
-
-
 <div class="container mt-5">
-    <!-- Se muestra el título de la página -->
-    <h1 class="mb-4">Mi ToDo List</h1>
-    <!-- Se muestra un mensaje de bienvenida -->
-    <p class="text-muted">Gestiona tus tareas fácilmente</p>
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">
+            <i class="bi bi-check2-square me-2"></i>Mi ToDo List
+        </h1>
+        <p class="text-muted">Gestiona tus tareas fácilmente</p>
+    </div>
 
-    <!-- Se muestra el menú principal -->
-    <div class="list-group shadow-sm rounded">
-        <!-- Se muestra el botón de ver tarea -->
-        <a href="{{ url_for('ver_tareas') }}" class="list-group-item list-group-item-action">Ver tareas</a>
-        <!-- Se muestra el botón de agregar tarea -->
-        <a href="{{ url_for('agregar_tarea') }}" class="list-group-item list-group-item-action">Agregar tarea</a>
-        <!-- Se muestra el botón de buscar tareas -->
-        <a href="{{ url_for('buscar_tareas') }}" class="list-group-item list-group-item-action">Buscar tareas</a>
-        <!-- Se muestra el botón de próximas tareas -->
-        <a href="{{ url_for('proximas_tareas') }}" class="list-group-item list-group-item-action">Próximas tareas</a>
-        <!-- Se muestra el botón de ver estadísticas -->
-        <a href="{{ url_for('ver_estadisticas') }}" class="list-group-item list-group-item-action">Estadísticas</a>
+    <div class="list-group shadow rounded overflow-hidden">
+        <a href="{{ url_for('ver_tareas') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-list-task me-2"></i>Ver tareas</span>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="{{ url_for('agregar_tarea') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-plus-circle me-2"></i>Agregar tarea</span>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="{{ url_for('buscar_tareas') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-search me-2"></i>Buscar tareas</span>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="{{ url_for('proximas_tareas') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-calendar-event me-2"></i>Próximas tareas</span>
+            <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="{{ url_for('ver_estadisticas') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-bar-chart-line me-2"></i>Estadísticas</span>
+            <i class="bi bi-chevron-right"></i>
+        </a>
     </div>
 </div>
-
-<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}
