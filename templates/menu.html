@@ -1,21 +1,33 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Menú{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+
 <div class="container mt-5">
+    <!-- Se muestra el título de la página -->
     <h1 class="mb-4">Mi ToDo List</h1>
+    <!-- Se muestra un mensaje de bienvenida -->
     <p class="text-muted">Gestiona tus tareas fácilmente</p>
 
+    <!-- Se muestra el menú principal -->
     <div class="list-group shadow-sm rounded">
+        <!-- Se muestra el botón de ver tarea -->
         <a href="{{ url_for('ver_tareas') }}" class="list-group-item list-group-item-action">Ver tareas</a>
+        <!-- Se muestra el botón de agregar tarea -->
         <a href="{{ url_for('agregar_tarea') }}" class="list-group-item list-group-item-action">Agregar tarea</a>
+        <!-- Se muestra el botón de buscar tareas -->
         <a href="{{ url_for('buscar_tareas') }}" class="list-group-item list-group-item-action">Buscar tareas</a>
+        <!-- Se muestra el botón de próximas tareas -->
         <a href="{{ url_for('proximas_tareas') }}" class="list-group-item list-group-item-action">Próximas tareas</a>
+        <!-- Se muestra el botón de ver estadísticas -->
         <a href="{{ url_for('ver_estadisticas') }}" class="list-group-item list-group-item-action">Estadísticas</a>
     </div>
 </div>
 
+<!-- Se cierra la etiqueta del contenido -->
 {% endblock %}
-

@@ -1,43 +1,55 @@
+<!-- Se incluye la plantilla de base de la aplicación -->
 {% extends "layout.html" %}
 
+<!-- Se define el título de la página -->
 {% block title %}Editar Tarea{% endblock %}
 
+<!-- Se define el contenido de la página -->
 {% block content %}
 
+<!-- Se muestra el botón de volver a la página anterior según el origen -->
 {% if origen == "tareas" %}
     <a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary mb-3">← Volver a tareas</a>
 {% elif origen == "buscar" %}
     <a href="{{ url_for('buscar_tareas') }}" class="btn btn-secondary mb-3">← Volver a búsqueda</a>
 {% endif %}
 
+<!-- Se muestra el título de la página -->
 <h1 class="mb-4">Editar tarea: {{ tarea.titulo }}</h1>
 
+<!-- Se muestra un mensaje de error si se encuentra -->
 {% if error %}
     <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 
+<!-- Se muestra el formulario de edición de la tarea -->
 <form method="post" class="card card-body">
     <div class="mb-3">
+        <!-- Se muestra el campo de título de la tarea -->
         <label for="titulo" class="form-label">Título:</label>
         <input type="text" id="titulo" name="titulo" class="form-control" required value="{{ tarea.titulo }}">
     </div>
 
     <div class="mb-3">
+        <!-- Se muestra el campo de descripción de la tarea -->
         <label for="descripcion" class="form-label">Descripción:</label>
         <input type="text" id="descripcion" name="descripcion" class="form-control" value="{{ tarea.descripcion }}">
     </div>
 
     <div class="mb-3">
+        <!-- Se muestra el campo de fecha de vencimiento de la tarea -->
         <label for="fecha_vencimiento" class="form-label">Fecha de vencimiento (dd-mm-aaaa):</label>
         <input type="text" id="fecha_vencimiento" name="fecha_vencimiento" class="form-control" required value="{{ tarea.fecha_vencimiento }}">
     </div>
 
     <div class="mb-3">
+    <!-- Se muestra el campo de categoría de la tarea -->
         <label for="categoria" class="form-label">Categoría:</label>
         <input type="text" id="categoria" name="categoria" class="form-control" value="{{ tarea.categoria }}">
     </div>
 
     <div class="mb-3">
+        <!-- Se muestra el campo de prioridad de la tarea -->
         <label for="prioridad" class="form-label">Prioridad:</label>
         <select id="prioridad" name="prioridad" class="form-select" required>
             <option value="alta" {% if tarea.prioridad == 'alta' %}selected{% endif %}>Alta</option>
@@ -46,7 +58,9 @@
         </select>
     </div>
 
+    <!-- Se muestra el botón de actualización de la tarea -->
     <button type="submit" class="btn btn-primary">Actualizar</button>
 </form>
 
+<!-- Se cierra la etiqueta del formulario -->
 {% endblock %}
