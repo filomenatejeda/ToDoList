@@ -1,5 +1,6 @@
-class Tarea:
-    def __init__(self, titulo, descripcion, estado="pendiente", fecha_vencimiento=None, prioridad="media", subtareas=None):
+class Tarea:  # Se define la clase Tarea
+    # Se define el constructor de la clase Tarea con los atributos necesarios para una tarea, iniciando la tarea como pendiente y con prioridad media
+    def __init__(self, titulo, descripcion, estado="pendiente", fecha_vencimiento=None, prioridad="media", subtareas=None): 
         self.titulo = titulo
         self.descripcion = descripcion
         self.estado = estado
@@ -8,7 +9,8 @@ class Tarea:
         # Subtareas: lista de dicts: {"nombre": str, "completada": bool}
         self.subtareas = subtareas if subtareas is not None else []
 
-    def to_dict(self):
+    # Se define el método to_dict para convertir la clase a un diccionario
+    def to_dict(self):  
         return {
             "titulo": self.titulo,
             "descripcion": self.descripcion,
@@ -18,8 +20,9 @@ class Tarea:
             "subtareas": self.subtareas
         }
 
+    # Se define un método estático de clase Tarea para crear una tarea a partir de un diccionario
     @staticmethod
-    def from_dict(data):
+    def from_dict(data):  
         return Tarea(
             titulo=data["titulo"],
             descripcion=data["descripcion"],
