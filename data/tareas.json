@@ -2,9 +2,9 @@
     {
         "titulo": "Estudiar para la prueba",
         "descripcion": "Cap\u00edtulos 1 al 5",
-        "estado": "completada",
+        "estado": "en progreso",
         "fecha_creacion": null,
-        "fecha_completada": "29-06-2025",
+        "fecha_completada": null,
         "fecha_vencimiento": "25-06-2025",
         "prioridad": "baja",
         "subtareas": [
@@ -22,7 +22,7 @@
             },
             {
                 "nombre": "Ver documental",
-                "completada": true
+                "completada": false
             }
         ],
         "categoria": "Universidad"
@@ -30,19 +30,19 @@
     {
         "titulo": "Preparar presentaci\u00f3n",
         "descripcion": "Dise\u00f1ar diapositivas para exposici\u00f3n",
-        "estado": "en progreso",
+        "estado": "completada",
         "fecha_creacion": null,
-        "fecha_completada": null,
+        "fecha_completada": "29-06-2025",
         "fecha_vencimiento": "28-06-2025",
         "prioridad": "media",
         "subtareas": [
             {
                 "nombre": "Buscar im\u00e1genes",
-                "completada": false
+                "completada": true
             },
             {
                 "nombre": "Redactar texto",
-                "completada": false
+                "completada": true
             }
         ],
         "categoria": "Trabajo"
@@ -72,15 +72,15 @@
     {
         "titulo": "Cita m\u00e9dica",
         "descripcion": "Chequeo general",
-        "estado": "pendiente",
+        "estado": "completada",
         "fecha_creacion": null,
-        "fecha_completada": null,
+        "fecha_completada": "29-06-2025",
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "media",
         "subtareas": [
             {
                 "nombre": "Llevar resultados de ex\u00e1menes",
-                "completada": false
+                "completada": true
             }
         ],
         "categoria": "Salud"

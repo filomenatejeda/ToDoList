@@ -280,7 +280,8 @@ def toggle_subtarea(tarea_idx, subtarea_idx):
         gestor.marcar_pendiente(tarea_idx)
     
     return jsonify({
-        "nuevo_estado": t.estado
+        "nuevo_estado": t.estado,
+        "indice": tarea_idx
     })
 
 
