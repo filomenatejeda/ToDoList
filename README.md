@@ -6,8 +6,8 @@ Este proyecto corresponde al desarrollo de un **Administrador de Tareas Personal
 
 ## Estudiantes
 
-- 
-- 
+- **Ignacio León** - ignleon@alumnos.uai.cl
+- **Alonso Tamayo** - atamayo@alumnos.uai.cl
 - **Filomena Tejeda** - ftejeda@alumnos.uai.cl
 
 ---
@@ -82,6 +82,8 @@ python -m terminal.main
 ```
 
 Este modo permite una gestión simple basada en texto, ideal para quienes prefieren trabajar sin interfaz gráfica.
+
+Se recomienda usar la interfaz web para una mayor experiencia de usuario, ya que ofrece una navegación más intuitiva y con mayor interactividad.
 
 ---
 
