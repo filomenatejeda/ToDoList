@@ -2,7 +2,7 @@
     {
         "titulo": "Estudiar para la prueba",
         "descripcion": "Cap\u00edtulos 1 al 5",
-        "estado": "completada",
+        "estado": "pendiente",
         "fecha_creacion": null,
         "fecha_completada": null,
         "fecha_vencimiento": "25-06-2025",
@@ -10,15 +10,15 @@
         "subtareas": [
             {
                 "nombre": "Leer cap\u00edtulo 1",
-                "completada": true
+                "completada": false
             },
             {
                 "nombre": "Leer cap\u00edtulo 2",
-                "completada": true
+                "completada": false
             },
             {
                 "nombre": "Resolver ejercicios",
-                "completada": true
+                "completada": false
             },
             {
                 "nombre": "Ver documental",
@@ -115,18 +115,28 @@
         "fecha_completada": "29-06-2025",
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "alta",
-        "subtareas": [],
+        "subtareas": [
+            {
+                "nombre": "Chao",
+                "completada": true
+            }
+        ],
         "categoria": "TESTEO"
     },
     {
         "titulo": "TESTEO3",
         "descripcion": "Esta deber\u00eda funcionar",
-        "estado": "completada",
+        "estado": "pendiente",
         "fecha_creacion": "19-06-2025",
-        "fecha_completada": "28-06-2025",
+        "fecha_completada": null,
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "alta",
-        "subtareas": [],
+        "subtareas": [
+            {
+                "nombre": "Hola",
+                "completada": false
+            }
+        ],
         "categoria": "TESTEO"
     }
 ]

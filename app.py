@@ -1,6 +1,6 @@
 # app.py
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime
 
 from gestor_web import GestorTareasWeb
@@ -211,16 +211,17 @@ def toggle_subtarea(tarea_idx, subtarea_idx):
     t = gestor.lista_tareas[tarea_idx]
     subt = t.subtareas[subtarea_idx]
     subt["completada"] = not subt["completada"]
-    gestor.guardar_en_archivo()
-    return redirect(url_for('ver_tareas'))
-
-@app.route("/toggle_subtarea_buscar/<int:tarea_idx>/<int:subtarea_idx>", methods=["POST"])
-def toggle_subtarea_buscar(tarea_idx, subtarea_idx):
-    t = gestor.lista_tareas[tarea_idx]
-    subt = t.subtareas[subtarea_idx]
-    subt["completada"] = not subt["completada"]
-    gestor.guardar_en_archivo()
-    return redirect(url_for('buscar_tareas'))
+    
+    if all(s["completada"] for s in t.subtareas):
+        gestor.marcar_completada(tarea_idx)
+    elif any(s["completada"] for s in t.subtareas):
+        gestor.marcar_progreso(tarea_idx)
+    else:
+        gestor.marcar_pendiente(tarea_idx)
+    
+    return jsonify({
+        "nuevo_estado": t.estado
+    })
 
 
 @app.route("/estadisticas")

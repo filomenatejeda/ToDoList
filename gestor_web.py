@@ -19,6 +19,8 @@ class GestorTareasWeb:
 
     def marcar_pendiente(self, indice):
         if 0 <= indice < len(self.lista_tareas):
+            if (self.lista_tareas[indice].estado == "completada"):
+                self.lista_tareas[indice].fecha_completada = None
             self.lista_tareas[indice].estado = "pendiente"
             self.guardar_en_archivo()
 
