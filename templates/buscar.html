@@ -100,7 +100,7 @@
                             <ul class="list-group mb-3">
                                 {% for subt in t.subtareas %}
                                     <li class="list-group-item d-flex align-items-center">
-                                        <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
+                                        <form method="post" action="{{ url_for('toggle_subtarea_buscar', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
                                             <input type="hidden" name="estado_actual" value="{{ '1' if subt.completada else '0' }}">
                                             <input type="checkbox" class="form-check-input me-2" onchange="this.form.submit()" {% if subt.completada %} checked {% endif %}>
                                             <span>{{ subt.nombre }}</span>

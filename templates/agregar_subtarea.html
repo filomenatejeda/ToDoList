@@ -16,7 +16,11 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Agregar subtarea</button>
-        <a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary ms-2">← Volver</a>
+        {% if origen == "tareas" %}
+            <a href="{{ url_for('ver_tareas') }}" class="btn btn-secondary ms-2">← Volver</a>
+        {% elif origen == "buscar" %}
+            <a href="{{ url_for('buscar_tareas') }}" class="btn btn-secondary ms-2">← Volver</a>
+        {% endif %}
     </form>
 </body>
 </html>

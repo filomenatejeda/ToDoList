@@ -182,7 +182,7 @@ def agregar_subtarea(indice):
             gestor.agregar_subtarea(indice, subtarea_texto)
             return redirect(url_for("ver_tareas"))
 
-        return render_template("agregar_subtarea.html", tarea=tarea)
+        return render_template("agregar_subtarea.html", tarea=tarea, origen="tareas")
 
     return redirect(url_for("ver_tareas"))
 
@@ -196,7 +196,7 @@ def agregar_subtarea_buscar(indice):
             gestor.agregar_subtarea(indice, subtarea_texto)
             return redirect(url_for("buscar_tareas"))
 
-        return render_template("agregar_subtarea.html", tarea=tarea)
+        return render_template("agregar_subtarea.html", tarea=tarea, origen="buscar")
 
     return redirect(url_for("buscar_tareas"))
 
@@ -213,6 +213,14 @@ def toggle_subtarea(tarea_idx, subtarea_idx):
     subt["completada"] = not subt["completada"]
     gestor.guardar_en_archivo()
     return redirect(url_for('ver_tareas'))
+
+@app.route("/toggle_subtarea_buscar/<int:tarea_idx>/<int:subtarea_idx>", methods=["POST"])
+def toggle_subtarea_buscar(tarea_idx, subtarea_idx):
+    t = gestor.lista_tareas[tarea_idx]
+    subt = t.subtareas[subtarea_idx]
+    subt["completada"] = not subt["completada"]
+    gestor.guardar_en_archivo()
+    return redirect(url_for('buscar_tareas'))
 
 
 @app.route("/estadisticas")
