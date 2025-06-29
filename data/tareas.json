@@ -4,7 +4,7 @@
         "descripcion": "Cap\u00edtulos 1 al 5",
         "estado": "completada",
         "fecha_vencimiento": "25-06-2025",
-        "prioridad": "alta",
+        "prioridad": "baja",
         "subtareas": [
             {
                 "nombre": "Leer cap\u00edtulo 1",
@@ -19,14 +19,15 @@
                 "completada": true
             },
             {
-                "nombre": "pel\u00edculas",
+                "nombre": "Ver documental",
                 "completada": false
             }
-        ]
+        ],
+        "categoria": "Universidad"
     },
     {
         "titulo": "Preparar presentaci\u00f3n",
-        "descripcion": "Dise\u00f1ar diapositivas",
+        "descripcion": "Dise\u00f1ar diapositivas para exposici\u00f3n",
         "estado": "en progreso",
         "fecha_vencimiento": "28-06-2025",
         "prioridad": "media",
@@ -39,30 +40,39 @@
                 "nombre": "Redactar texto",
                 "completada": false
             }
-        ]
+        ],
+        "categoria": "Trabajo"
     },
     {
         "titulo": "Comprar materiales",
-        "descripcion": "Papeler\u00eda y \u00fatiles",
+        "descripcion": "Papeler\u00eda y \u00fatiles escolares",
         "estado": "completada",
         "fecha_vencimiento": "20-06-2023",
         "prioridad": "baja",
-        "subtareas": []
+        "subtareas": [],
+        "categoria": "Compras"
     },
     {
-        "titulo": "Prueba",
-        "descripcion": "aaaaa",
+        "titulo": "Prueba final",
+        "descripcion": "Examen de fin de semestre",
         "estado": "pendiente",
-        "fecha_vencimiento": "20-12-2005",
-        "prioridad": "media",
-        "subtareas": []
+        "fecha_vencimiento": "20-12-2025",
+        "prioridad": "alta",
+        "subtareas": [],
+        "categoria": "Universidad"
     },
     {
-        "titulo": "Hola",
-        "descripcion": "aaaa",
+        "titulo": "Cita m\u00e9dica",
+        "descripcion": "Chequeo general",
         "estado": "pendiente",
-        "fecha_vencimiento": "20-2-2005",
+        "fecha_vencimiento": "30-06-2025",
         "prioridad": "media",
-        "subtareas": []
+        "subtareas": [
+            {
+                "nombre": "Llevar resultados de ex\u00e1menes",
+                "completada": false
+            }
+        ],
+        "categoria": "Salud"
     }
 ]
