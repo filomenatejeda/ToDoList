@@ -95,6 +95,21 @@ def marcar_completada(indice):
     gestor.marcar_completada(indice)
     return redirect(url_for("ver_tareas"))
 
+@app.route("/marcar_pendiente_buscar/<int:indice>")
+def marcar_pendiente_buscar(indice):
+    gestor.marcar_pendiente(indice)
+    return redirect(url_for("buscar_tareas"))
+
+@app.route("/marcar_progreso_buscar/<int:indice>")
+def marcar_progreso_buscar(indice):
+    gestor.marcar_progreso(indice)
+    return redirect(url_for("buscar_tareas"))
+
+@app.route("/marcar_completada_buscar/<int:indice>")
+def marcar_completada_buscar(indice):
+    gestor.marcar_completada(indice)
+    return redirect(url_for("buscar_tareas"))
+
 @app.route("/editar/<int:indice>", methods=["GET", "POST"])
 def editar_tarea(indice):
     tarea = gestor.lista_tareas[indice]
