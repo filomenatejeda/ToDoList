@@ -4,38 +4,52 @@
 
 {% block content %}
 
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">
+    <i class="bi bi-arrow-left"></i> Volver al menú
+</a>
+
 <h1 class="mb-4">Tareas próximas (en los próximos 3 días)</h1>
 
 {% if tareas %}
-    <ul class="list-group">
+    <div class="d-flex flex-column gap-3">
     {% for tarea in tareas %}
-        <li class="list-group-item">
-            <strong>[{{ tarea.estado.upper() }}]</strong> {{ tarea.titulo }} - {{ tarea.descripcion }} 
-            <span class="text-muted">(Vence: {{ tarea.fecha_vencimiento }})</span>
+        <div class="accordion-item mb-4 border-0 rounded-4 shadow-sm bg-white px-4 py-3">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex flex-column">
+                    <h5 class="mb-1 fw-semibold">{{ tarea.titulo }}</h5>
+                    <p class="mb-1 text-muted small">{{ tarea.descripcion }}</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light text-dark border">{{ tarea.estado|capitalize }}</span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Prioridad: {{ tarea.prioridad|capitalize }}</span>
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Categoría: {{ tarea.categoria or "Sin categoría" }}</span>
+                        {% if tarea.fecha_vencimiento %}
+                            <span class="badge bg-warning-subtle border border-warning-subtle fw-semibold" style="color: #8a6d1a;">Vence: {{ tarea.fecha_vencimiento }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
             {% if tarea.subtareas %}
-                <ul class="mt-2 list-group">
-                    {% for subt in tarea.subtareas %}
-                        <li class="list-group-item">
-                            {% if subt.completada %}
-                                ✅
-                            {% else %}
-                                ⬜
-                            {% endif %}
-                            {{ subt.nombre }}
-                        </li>
-                    {% endfor %}
+                <ul class="list-group mt-3">
+                {% for subt in tarea.subtareas %}
+                    <li class="list-group-item border-0 ps-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" disabled {% if subt.completada %}checked{% endif %}>
+                            <label class="form-check-label">
+                                {{ subt.nombre }}
+                            </label>
+                        </div>
+                    </li>
+                {% endfor %}
                 </ul>
             {% else %}
-                <p class="text-muted mt-2">No tiene subtareas.</p>
+                <p class="text-muted mt-2 mb-0">No tiene subtareas.</p>
             {% endif %}
-        </li>
+        </div>
     {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
 {% endif %}
-
-<a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">← Volver al menú</a>
 
 {% endblock %}

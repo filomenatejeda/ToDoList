@@ -4,44 +4,37 @@
 
 {% block content %}
 
-<a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">← Volver al menú</a>
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mb-3">
+    <i class="bi bi-arrow-left"></i> Volver al menú
+</a>
+
 <h1 class="mb-4">Búsqueda</h1>
 
 <!-- Formulario de búsqueda general -->
 <form method="post" class="mb-4">
     <div class="mb-4">
-    <div class="input-group shadow-sm rounded-3 overflow-hidden">
-        <span class="input-group-text bg-white border-end-0">
-            <i class="bi bi-search"></i>
-        </span>
-        <input type="text" name="texto" value="{{ texto or '' }}"
-               class="form-control border-start-0 border-secondary-subtle rounded-0"
-               placeholder="Buscar por palabra clave...">
-        <button type="submit" class="btn btn-dark px-4">Buscar</button>
+        <div class="input-group shadow-sm rounded-3 overflow-hidden">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" name="texto" value="{{ texto or '' }}"
+                   class="form-control border-start-0 border-secondary-subtle rounded-0"
+                   placeholder="Buscar por palabra clave...">
+            <button type="submit" class="btn btn-dark px-4">Buscar</button>
+        </div>
     </div>
-</div>
-
 
     <!-- Filtros de estado -->
     <div class="mb-3">
         <label class="form-label">Filtrar por estado:</label>
         <div class="btn-group d-flex flex-wrap gap-2" role="group">
-            <button type="submit" name="estado" value="" 
-                class="btn btn-light border shadow-sm {% if estado_seleccionado == '' %}bg-dark text-white fw-semibold{% endif %}">
-                Todos
-            </button>
-            <button type="submit" name="estado" value="pendiente" 
-                class="btn btn-light border shadow-sm {% if estado_seleccionado == 'pendiente' %}bg-secondary text-white fw-semibold{% endif %}">
-                Pendiente
-            </button>
-            <button type="submit" name="estado" value="en progreso" 
-                class="btn btn-light border shadow-sm {% if estado_seleccionado == 'en progreso' %}bg-info text-white fw-semibold{% endif %}">
-                En progreso
-            </button>
-            <button type="submit" name="estado" value="completada" 
-                class="btn btn-light border shadow-sm {% if estado_seleccionado == 'completada' %}bg-success text-white fw-semibold{% endif %}">
-                Completada
-            </button>
+            {% set estados = [('','Todos'), ('pendiente','Pendiente'), ('en progreso','En progreso'), ('completada','Completada')] %}
+            {% for value, label in estados %}
+                <button type="submit" name="estado" value="{{ value }}"
+                        class="btn btn-light border shadow-sm {% if estado_seleccionado == value %}bg-dark text-white fw-semibold{% endif %}">
+                    {{ label }}
+                </button>
+            {% endfor %}
         </div>
     </div>
 
@@ -49,32 +42,30 @@
     <div class="mb-3">
         <label class="form-label">Filtrar por prioridad:</label>
         <div class="btn-group d-flex flex-wrap gap-2" role="group">
-            <button type="submit" name="prioridad" value="" 
-                class="btn btn-light border shadow-sm {% if prioridad_seleccionada == '' %}bg-dark text-white fw-semibold{% endif %}">
-                Todas
-            </button>
-            <button type="submit" name="prioridad" value="alta" 
-                class="btn btn-light border shadow-sm {% if prioridad_seleccionada == 'alta' %}bg-danger text-white fw-semibold{% endif %}">
-                Alta
-            </button>
-            <button type="submit" name="prioridad" value="media" 
-                class="btn btn-light border shadow-sm {% if prioridad_seleccionada == 'media' %}bg-warning text-dark fw-semibold{% endif %}">
-                Media
-            </button>
-            <button type="submit" name="prioridad" value="baja" 
-                class="btn btn-light border shadow-sm {% if prioridad_seleccionada == 'baja' %}bg-success text-white fw-semibold{% endif %}">
-                Baja
-            </button>
+            {% set prioridades = [('','Todas'), ('alta','Alta'), ('media','Media'), ('baja','Baja')] %}
+            {% for value, label in prioridades %}
+                <button type="submit" name="prioridad" value="{{ value }}"
+                        class="btn btn-light border shadow-sm 
+                            {% if prioridad_seleccionada == value %}
+                                {% if value == 'alta' %}bg-danger text-white fw-semibold
+                                {% elif value == 'media' %}bg-warning text-dark fw-semibold
+                                {% elif value == 'baja' %}bg-success text-white fw-semibold
+                                {% else %}bg-dark text-white fw-semibold{% endif %}
+                            {% endif %}">
+                    {{ label }}
+                </button>
+            {% endfor %}
         </div>
     </div>
 </form>
 
 <!-- Resultados -->
 {% if resultados %}
-    <div class="mt-4">
+    <div class="accordion" id="accordionBusqueda">
         {% for t in resultados %}
-            <div class="accordion-item mb-4 border-0 rounded-4 shadow-sm bg-white px-4 py-3">
-                <div class="d-flex justify-content-between align-items-start">
+            {% set tarea_idx = loop.index0 %}
+            <div class="accordion-item mb-4 border-0 rounded-4 shadow-sm bg-white">
+                <div class="accordion-header d-flex justify-content-between align-items-start px-4 py-3">
                     <div class="d-flex flex-column">
                         <h5 class="mb-1 fw-semibold">{{ t.titulo }}</h5>
                         <p class="mb-1 text-muted small">{{ t.descripcion }}</p>
@@ -87,10 +78,46 @@
                             {% endif %}
                         </div>
                     </div>
+
                     <div class="d-flex align-items-start mt-1">
-                        <a href="{{ url_for('editar_tarea', indice=loop.index0) }}" class="task-icon me-3" title="Editar tarea">
+                        <a href="{{ url_for('editar_tarea', indice=tarea_idx) }}" class="task-icon me-3" title="Editar tarea">
                             <i class="bi bi-pencil"></i>
                         </a>
+                        <button class="btn btn-sm btn-chevron toggle-arrow" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseBusqueda{{ loop.index }}"
+                                aria-expanded="false"
+                                aria-controls="collapseBusqueda{{ loop.index }}">
+                            <i class="bi bi-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="collapseBusqueda{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordionBusqueda">
+                    <div class="accordion-body">
+                        {% if t.subtareas %}
+                            <h6>Subtareas:</h6>
+                            <ul class="list-group mb-3">
+                                {% for subt in t.subtareas %}
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <form method="post" action="{{ url_for('toggle_subtarea', tarea_idx=tarea_idx, subtarea_idx=loop.index0) }}" class="d-flex align-items-center w-100">
+                                            <input type="hidden" name="estado_actual" value="{{ '1' if subt.completada else '0' }}">
+                                            <input type="checkbox" class="form-check-input me-2" onchange="this.form.submit()" {% if subt.completada %} checked {% endif %}>
+                                            <span>{{ subt.nombre }}</span>
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No tiene subtareas.</p>
+                        {% endif %}
+
+                        <div class="mt-3">
+                            <a href="{{ url_for('eliminar_tarea', indice=tarea_idx) }}" class="btn btn-danger btn-sm me-2">Eliminar</a>
+                            <a href="{{ url_for('cambiar_estado', indice=tarea_idx) }}" class="btn btn-warning btn-sm me-2">Cambiar estado</a>
+                            <a href="{{ url_for('agregar_subtarea', indice=tarea_idx) }}" class="btn btn-info btn-sm me-2">+ Subtarea</a>
+                            <a href="{{ url_for('editar_tarea', indice=tarea_idx) }}" class="btn btn-secondary btn-sm">Editar tarea</a>
+                        </div>
                     </div>
                 </div>
             </div>
