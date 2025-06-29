@@ -80,6 +80,16 @@ def eliminar_tarea(indice):
     gestor.eliminar_tarea(indice)
     return redirect(url_for("ver_tareas"))
 
+@app.route("/marcar_pendiente/<int:indice>")
+def marcar_pendiente(indice):
+    gestor.marcar_pendiente(indice)
+    return redirect(url_for("ver_tareas"))
+
+@app.route("/marcar_progreso/<int:indice>")
+def marcar_progreso(indice):
+    gestor.marcar_progreso(indice)
+    return redirect(url_for("ver_tareas"))
+
 @app.route("/marcar_completada/<int:indice>")
 def marcar_completada(indice):
     gestor.marcar_completada(indice)

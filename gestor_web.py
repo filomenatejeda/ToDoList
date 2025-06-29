@@ -17,6 +17,16 @@ class GestorTareasWeb:
             self.lista_tareas.pop(indice)
             self.guardar_en_archivo()
 
+    def marcar_pendiente(self, indice):
+        if 0 <= indice < len(self.lista_tareas):
+            self.lista_tareas[indice].estado = "pendiente"
+            self.guardar_en_archivo()
+
+    def marcar_progreso(self, indice):
+        if 0 <= indice < len(self.lista_tareas):
+            self.lista_tareas[indice].estado = "en progreso"
+            self.guardar_en_archivo()
+
     def marcar_completada(self, indice):
         if 0 <= indice < len(self.lista_tareas):
             self.lista_tareas[indice].estado = "completada"

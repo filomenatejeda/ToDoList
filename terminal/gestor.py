@@ -38,6 +38,26 @@ class GestorTareas:
         except ValueError:
             print("Entrada no válida. Ingrese un número.")
 
+    def marcar_pendiente(self, titulo):
+        for tarea in self.lista_tareas:
+            if tarea.titulo.lower() == titulo.lower():
+                tarea.estado = "pendiente"
+                print(f"Tarea '{titulo}' marcada como pendiente.")
+                self.guardar_en_archivo()
+                return
+
+        print(f"No se encontró la tarea con título '{titulo}'.")
+
+    def marcar_progreso(self, titulo):
+        for tarea in self.lista_tareas:
+            if tarea.titulo.lower() == titulo.lower():
+                tarea.estado = "en progreso"
+                print(f"Tarea '{titulo}' marcada como en progreso.")
+                self.guardar_en_archivo()
+                return
+
+        print(f"No se encontró la tarea con título '{titulo}'.")
+
     def marcar_completada(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
