@@ -48,12 +48,6 @@ class GestorTareasWeb:
 
         self.guardar_en_archivo()
 
-
-    def agregar_subtarea(self, indice, subtarea):
-        tarea = self.lista_tareas[indice]
-        tarea.subtareas.append(subtarea)
-        self.guardar_en_archivo()
-
     def buscar_tareas(self, palabra_clave):
         palabra = palabra_clave.lower()
         resultados = []
@@ -125,20 +119,13 @@ class GestorTareasWeb:
             print("No se encontró archivo, empezando con lista vacía.")
         except Exception as e:
             print(f"Error al cargar: {e}")
-    
-    def agregar_subtarea(self, titulo, nombre_subtarea):
-        for tarea in self.lista_tareas:
-            if tarea.titulo.lower() == titulo.lower():
-                tarea.subtareas.append({"nombre": nombre_subtarea, "completada": False})
-                print("Subtarea agregada.")
-                self.guardar_en_archivo()
-                return
-        print(f"No se encontró tarea con título '{titulo}'.")
+
     def agregar_subtarea(self, indice, texto):
         if 0 <= indice < len(self.lista_tareas):
          subtarea = { "nombre": texto, "completada": False }
          self.lista_tareas[indice].subtareas.append(subtarea)
          self.guardar_en_archivo()
+         
     def buscar_tareas_avanzada(self, texto="", estado="", prioridad=""):
         texto = texto.lower()
         estado = estado.lower()
