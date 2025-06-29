@@ -33,7 +33,7 @@
         "estado": "completada",
         "fecha_creacion": null,
         "fecha_completada": "29-06-2025",
-        "fecha_vencimiento": "28-06-2025",
+        "fecha_vencimiento": "17-06-2025",
         "prioridad": "media",
         "subtareas": [
             {
@@ -74,7 +74,7 @@
         "descripcion": "Chequeo general",
         "estado": "completada",
         "fecha_creacion": null,
-        "fecha_completada": "29-06-2025",
+        "fecha_completada": "28-06-2025",
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "media",
         "subtareas": [
@@ -112,7 +112,7 @@
         "descripcion": "Esta deber\u00eda funcionar",
         "estado": "completada",
         "fecha_creacion": "19-06-2025",
-        "fecha_completada": "29-06-2025",
+        "fecha_completada": "28-06-2025",
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "alta",
         "subtareas": [
@@ -126,15 +126,15 @@
     {
         "titulo": "TESTEO3",
         "descripcion": "Esta deber\u00eda funcionar",
-        "estado": "pendiente",
+        "estado": "completada",
         "fecha_creacion": "19-06-2025",
-        "fecha_completada": null,
+        "fecha_completada": "28-06-2025",
         "fecha_vencimiento": "30-06-2025",
         "prioridad": "alta",
         "subtareas": [
             {
                 "nombre": "Hola",
-                "completada": false
+                "completada": true
             }
         ],
         "categoria": "TESTEO"

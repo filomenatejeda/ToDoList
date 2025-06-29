@@ -298,7 +298,7 @@ def ver_estadisticas():
 
     # Se calcula el porcentaje de tareas por estado y se crea un conjunto con los nombres, cantidades y porcentajes
     nombres_estados = ["completadas", "en progreso", "pendientes"]
-    porcentajes_tareas = [round((cantidad_tareas / suma) * 100, 1) for cantidad_tareas in cantidades_tareas]
+    porcentajes_tareas = [round((cantidad_tareas / suma) * 100, 1) if hay_tareas else 0 for cantidad_tareas in cantidades_tareas]
     conjunto_porcentajes_tareas = [[nombres_estados[i], cantidades_tareas[i], porcentajes_tareas[i]] for i in range(len(nombres_estados))]
 
     # Se obtienen las cantidades de tareas completadas en los últimos días

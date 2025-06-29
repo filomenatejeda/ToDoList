@@ -217,7 +217,9 @@ class GestorTareasWeb:
                     # Se intenta convertir la fecha de vencimiento de la tarea a un objeto datetime
                     fecha_tarea = datetime.strptime(t.fecha_completada, "%d-%m-%Y")
                     # Se verifica si la fecha de vencimiento es dentro del rango límite
-                    if limite <= fecha_tarea <= hoy or fecha_tarea.strftime("%d-%m-%Y").__eq__(hoy.strftime("%d-%m-%Y")):
+                    if (dias == 0 or dias == 1) and fecha_tarea.strftime("%d-%m-%Y").__eq__(limite.strftime("%d-%m-%Y")):
+                        ultimas.append(t)
+                    elif dias > 1 and limite <= fecha_tarea <= hoy:
                         ultimas.append(t)
                 except ValueError:
                     pass
