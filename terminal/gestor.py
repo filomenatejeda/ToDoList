@@ -1,31 +1,39 @@
 # gestor.py
 
+# Se importa la clase Tarea para crear y manipular tareas, así como la clase datetime y timedelta para manejar fechas y horas
 import json
 from core.tarea import Tarea
 from datetime import datetime, timedelta
 
+# Se define la clase GestorTareas para gestionar las tareas y sus operaciones
 class GestorTareas:
+    # Se define el constructor de la clase GestorTareas para inicializar la lista de tareas vacía
     def __init__(self):
         self.lista_tareas = []
 
+    # Se define el método agregar_tarea para agregar una tarea a la lista de tareas y guardar el archivo
     def agregar_tarea(self, tarea):
         self.lista_tareas.append(tarea)
         self.guardar_en_archivo()
 
+    # Se define el método eliminar_tarea para eliminar una tarea de la lista de tareas y guardar el archivo
     def eliminar_tarea(self):
         if not self.lista_tareas:
             print("No hay tareas para eliminar.")
             return
 
+        # Se muestra la lista de tareas y se solicita al usuario que seleccione la tarea a eliminar
         print("\n=== TAREAS DISPONIBLES ===")
         for idx, tarea in enumerate(self.lista_tareas, 1):
             print(f"{idx}. [{tarea.estado.upper()}] {tarea.titulo} - {tarea.descripcion} (Vence: {tarea.fecha_vencimiento})")
 
         try:
+            # Se solicita al usuario que seleccione la tarea a eliminar
             seleccion = int(input("Ingrese el número de la tarea a eliminar: "))
             if 1 <= seleccion <= len(self.lista_tareas):
                 tarea_eliminada = self.lista_tareas[seleccion - 1]
 
+                # Se solicita al usuario si desea eliminar la tarea
                 confirm = input(f"¿Está seguro que desea eliminar '{tarea_eliminada.titulo}'? (s/n): ")
                 if confirm.lower() == "s":
                     self.lista_tareas.pop(seleccion - 1)
@@ -38,6 +46,7 @@ class GestorTareas:
         except ValueError:
             print("Entrada no válida. Ingrese un número.")
 
+    # Se define el método marcar_pendiente para marcar una tarea como pendiente y guardar el archivo
     def marcar_pendiente(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
@@ -48,6 +57,7 @@ class GestorTareas:
 
         print(f"No se encontró la tarea con título '{titulo}'.")
 
+    # Se define el método marcar_progreso para marcar una tarea como en progreso y guardar el archivo
     def marcar_progreso(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
@@ -58,6 +68,7 @@ class GestorTareas:
 
         print(f"No se encontró la tarea con título '{titulo}'.")
 
+    # Se define el método marcar_completada para marcar una tarea como completada y guardar el archivo
     def marcar_completada(self, titulo):
         for tarea in self.lista_tareas:
             if tarea.titulo.lower() == titulo.lower():
@@ -68,28 +79,36 @@ class GestorTareas:
 
         print(f"No se encontró la tarea con título '{titulo}'.")
 
+    # Se define el método mostrar_tareas para mostrar las tareas filtradas y ordenadas según los parámetros
     def mostrar_tareas(self, filtro_estado=None, fecha_maxima=None, ordenar_por=None):
+        # Se verifica si hay tareas para mostrar
         if not self.lista_tareas:
             print("No hay tareas.")
             return
 
+        # Se crea una variable fecha_max_dt para almacenar la fecha máxima filtrada
         fecha_max_dt = None
         if fecha_maxima:
             try:
+                # Se intenta convertir la fecha máxima a un objeto datetime
                 fecha_max_dt = datetime.strptime(fecha_maxima, "%d-%m-%Y")
             except ValueError:
                 print(" Fecha máxima inválida. Ignorando filtro de fecha.")
                 fecha_max_dt = None
 
+        # Se filtran las tareas según el estado y la fecha máxima
         tareas_filtradas = []
         for t in self.lista_tareas:
             incluir = True
 
+            # Se filtra la tarea según el estado
             if filtro_estado and t.estado.lower() != filtro_estado.lower():
                 incluir = False
 
+            # Se filtra la tarea según la fecha máxima
             if fecha_max_dt and t.fecha_vencimiento:
                 try:
+                    # Se intenta convertir la fecha de vencimiento de la tarea a un objeto datetime
                     fecha_tarea_dt = datetime.strptime(t.fecha_vencimiento, "%d-%m-%Y")
                     if fecha_tarea_dt > fecha_max_dt:
                         incluir = False

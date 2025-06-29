@@ -80,6 +80,11 @@ def eliminar_tarea(indice):
     gestor.eliminar_tarea(indice)
     return redirect(url_for("ver_tareas"))
 
+@app.route("/eliminar_tarea_buscar/<int:indice>")
+def eliminar_tarea_buscar(indice):
+    gestor.eliminar_tarea(indice)
+    return redirect(url_for("buscar_tareas"))
+
 @app.route("/marcar_pendiente/<int:indice>")
 def marcar_pendiente(indice):
     gestor.marcar_pendiente(indice)
@@ -125,6 +130,21 @@ def editar_tarea(indice):
 
     return render_template("editar.html", tarea=tarea, indice=indice)
 
+@app.route("/editar_tarea_buscar/<int:indice>", methods=["GET", "POST"])
+def editar_tarea_buscar(indice):
+    tarea = gestor.lista_tareas[indice]
+    if request.method == "POST":
+        nuevo_titulo = request.form.get("titulo")
+        nueva_desc = request.form.get("descripcion")
+        nueva_fecha = request.form.get("fecha")
+        nueva_prioridad = request.form.get("prioridad", "media")
+        nueva_categoria = request.form.get("categoria", "")
+
+        gestor.editar_tarea(indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria)
+        return redirect(url_for("buscar_tareas"))
+
+    return render_template("editar.html", tarea=tarea, indice=indice)
+
 @app.route("/buscar", methods=["GET", "POST"])
 def buscar_tareas():
     texto = ""
@@ -163,6 +183,20 @@ def agregar_subtarea(indice):
         return render_template("agregar_subtarea.html", tarea=tarea)
 
     return redirect(url_for("ver_tareas"))
+
+@app.route("/agregar_subtarea_buscar/<int:indice>", methods=["GET", "POST"])
+def agregar_subtarea_buscar(indice):
+    if 0 <= indice < len(gestor.lista_tareas):
+        tarea = gestor.lista_tareas[indice]
+
+        if request.method == "POST":
+            subtarea_texto = request.form.get("subtarea")
+            gestor.agregar_subtarea(indice, subtarea_texto)
+            return redirect(url_for("buscar_tareas"))
+
+        return render_template("agregar_subtarea.html", tarea=tarea)
+
+    return redirect(url_for("buscar_tareas"))
 
 
 @app.route("/proximas")
