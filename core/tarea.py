@@ -1,9 +1,11 @@
 class Tarea:  # Se define la clase Tarea
     # Se define el constructor de la clase Tarea con los atributos necesarios para una tarea, iniciando la tarea como pendiente y con prioridad media
-    def __init__(self, titulo, descripcion, estado="pendiente", fecha_vencimiento=None, prioridad="media", subtareas=None, categoria=""): 
+    def __init__(self, titulo, descripcion, estado="pendiente", fecha_creacion=None, fecha_completada=None, fecha_vencimiento=None, prioridad="media", subtareas=None, categoria=""): 
         self.titulo = titulo
         self.descripcion = descripcion
         self.estado = estado
+        self.fecha_creacion = fecha_creacion
+        self.fecha_completada = fecha_completada
         self.fecha_vencimiento = fecha_vencimiento
         self.prioridad = prioridad
         # Subtareas: lista de dicts: {"nombre": str, "completada": bool}
@@ -11,11 +13,13 @@ class Tarea:  # Se define la clase Tarea
         self.categoria = categoria 
 
     # Se define el método to_dict para convertir la clase a un diccionario
-    def to_dict(self):  
+    def to_dict(self):
         return {
             "titulo": self.titulo,
             "descripcion": self.descripcion,
             "estado": self.estado,
+            "fecha_creacion": self.fecha_creacion,
+            "fecha_completada": self.fecha_completada,
             "fecha_vencimiento": self.fecha_vencimiento,
             "prioridad": self.prioridad,
             "subtareas": self.subtareas,
@@ -29,6 +33,8 @@ class Tarea:  # Se define la clase Tarea
             titulo=data["titulo"],
             descripcion=data["descripcion"],
             estado=data.get("estado", "pendiente"),
+            fecha_creacion=data.get("fecha_creacion"),
+            fecha_completada=data.get("fecha_completada"),
             fecha_vencimiento=data.get("fecha_vencimiento"),
             prioridad=data.get("prioridad", "media"),
             subtareas=data.get("subtareas", []),

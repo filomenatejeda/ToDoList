@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}Estadísticas{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-4">Estadísticas</h1>
+
+{% if hay_tareas %}
+    {% for cpt in conjunto_porcentajes_tareas %}
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p>Tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[1] }}</b></p>
+        </li>
+        <li class="list-group-item">
+            <p>Porcentaje total de tareas <b>{{ cpt[0] }}</b>: <b>{{ cpt[2] }}%</b></p>
+        </li>
+    </ul>
+    {% endfor %}
+    <ul class="list-group">
+        {% for cutc in cantidades_ultimas_tareas_completadas %}
+        <li class="list-group-item">
+            {% if cutc[0] == 0 %}
+            <p>Cantidad de tareas completadas hoy: <b>{{ cutc[1] }}</b></p>
+            {% elif cutc[0] == 1 %}
+            <p>Cantidad de tareas completadas en el día anterior: <b>{{ cutc[1] }}</b></p>
+            {% else %}
+            <p>Cantidad de tareas completadas en los últimos {{ cutc[0] }} días: <b>{{ cutc[1] }}</b> </p>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-info mt-3">No hay tareas próximas a vencer.</div>
+{% endif %}
+
+<a href="{{ url_for('menu') }}" class="btn btn-secondary mt-4">← Volver al menú</a>
+
+{% endblock %}

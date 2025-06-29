@@ -1,6 +1,8 @@
 # app.py
 
 from flask import Flask, render_template, request, redirect, url_for
+from datetime import datetime
+
 from gestor_web import GestorTareasWeb
 from core.tarea import Tarea
 from core.validacion import validar_titulo, validar_fecha, formatear_fecha
@@ -60,7 +62,7 @@ def agregar_tarea():
         fecha_formateada = formatear_fecha(fecha)
 
     # Crear tarea:
-        tarea = Tarea(titulo, descripcion, "pendiente", fecha_formateada, prioridad, categoria=categoria)
+        tarea = Tarea(titulo, descripcion, "pendiente", datetime.today().strftime("%d-%m-%Y"), None, fecha_formateada, prioridad, categoria=categoria)
         gestor.agregar_tarea(tarea)
         return redirect(url_for("ver_tareas"))
 
@@ -211,6 +213,27 @@ def toggle_subtarea(tarea_idx, subtarea_idx):
     subt["completada"] = not subt["completada"]
     gestor.guardar_en_archivo()
     return redirect(url_for('ver_tareas'))
+
+
+@app.route("/estadisticas")
+def ver_estadisticas():
+    cantidades_tareas = [len(lista_tareas) for lista_tareas in gestor.obtener_tareas_por_estado()]
+    suma = sum(cantidades_tareas)
+
+    hay_tareas = suma > 0
+
+    nombres_estados = ["completadas", "en progreso", "pendientes"]
+    porcentajes_tareas = [round((cantidad_tareas / suma) * 100, 1) for cantidad_tareas in cantidades_tareas]
+    conjunto_porcentajes_tareas = [[nombres_estados[i], cantidades_tareas[i], porcentajes_tareas[i]] for i in range(len(nombres_estados))]
+
+    cantidades_ultimas_tareas_completadas = [[i, len(gestor.obtener_ultimas_tareas_completadas(dias=i))] for i in [0, 1, 7, 30]]
+
+
+    return render_template("estadisticas.html",
+        hay_tareas=hay_tareas,
+        conjunto_porcentajes_tareas=conjunto_porcentajes_tareas,
+        cantidades_ultimas_tareas_completadas=cantidades_ultimas_tareas_completadas
+    )
 
 
 if __name__ == "__main__":

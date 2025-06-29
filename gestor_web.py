@@ -24,12 +24,15 @@ class GestorTareasWeb:
 
     def marcar_progreso(self, indice):
         if 0 <= indice < len(self.lista_tareas):
+            if (self.lista_tareas[indice].estado == "completada"):
+                self.lista_tareas[indice].fecha_completada = None
             self.lista_tareas[indice].estado = "en progreso"
             self.guardar_en_archivo()
 
     def marcar_completada(self, indice):
         if 0 <= indice < len(self.lista_tareas):
             self.lista_tareas[indice].estado = "completada"
+            self.lista_tareas[indice].fecha_completada = datetime.today().strftime("%d-%m-%Y")
             self.guardar_en_archivo()
 
     def editar_tarea(self, indice, nuevo_titulo, nueva_desc, nueva_fecha, nueva_prioridad, nueva_categoria):
@@ -144,4 +147,32 @@ class GestorTareasWeb:
                 resultados.append(t)
 
         return resultados
+    
+    def obtener_tareas_por_estado(self):
+        tareas_completadas = []
+        tareas_en_progreso = []
+        tareas_pendientes = []
 
+        for t in self.lista_tareas:
+            if t.estado == "completada":
+                tareas_completadas.append(tareas_completadas)
+            elif t.estado == "en progreso":
+                tareas_en_progreso.append(tareas_en_progreso)
+            else:
+                tareas_pendientes.append(tareas_pendientes)
+        
+        return tareas_completadas, tareas_en_progreso, tareas_pendientes
+    
+    def obtener_ultimas_tareas_completadas(self, dias=7):
+        hoy = datetime.today()
+        limite = hoy - timedelta(days=dias)
+        ultimas = []
+        for t in self.lista_tareas:
+            if t.fecha_completada:
+                try:
+                    fecha_tarea = datetime.strptime(t.fecha_completada, "%d-%m-%Y")
+                    if limite <= fecha_tarea <= hoy or fecha_tarea.strftime("%d-%m-%Y").__eq__(hoy.strftime("%d-%m-%Y")):
+                        ultimas.append(t)
+                except ValueError:
+                    pass
+        return ultimas
